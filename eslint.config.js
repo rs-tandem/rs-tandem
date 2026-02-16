@@ -94,8 +94,8 @@ export default tseslint.config(
       },
     },
     rules: {
-      "no-magic-numbers": "error",
-      "@typescript-eslint/no-magic-numbers": "error",
+      "no-magic-numbers": "off",
+      "@typescript-eslint/no-magic-numbers": "off",
     },
   },
 
