@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at 40% 40%, #82cfff, #152935);
+  color: var(--color-neutral);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}

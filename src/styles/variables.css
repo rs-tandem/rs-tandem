@@ -1,0 +1,29 @@
+:root {
+  /* Цвета */
+  --color-primary: #3697c1;
+  --color-secondary: #ffc107;
+  --color-success: #4ca330;
+  --color-error: #ff7f2a;
+  --color-neutral: #2c3e30;
+  --color-bg-light: #f8fafb;
+  --color-bg-dark: #152935;
+  --color-accent: #82cfff;
+
+  /* Шрифты */
+  --font-regular: 16px 'Poppins', sans-serif;
+  --font-semibold: 20px 'Poppins', sans-serif;
+  --font-bold: 32px 'Poppins', sans-serif;
+
+  /* Семейство шрифтов */
+  --font-family: 'Poppins', sans-serif;
+
+  /* Размеры шрифтов */
+  --font-size-regular: 16px;
+  --font-size-semibold: 20px;
+  --font-size-bold: 32px;
+
+  /* Вес шрифтов */
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
