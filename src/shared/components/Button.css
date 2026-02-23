@@ -1,0 +1,76 @@
+.button {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  max-height: 40px;
+  min-height: 40px;
+  user-select: none;
+  transition: all 0.1s ease;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 0px;
+  pointer-events: none;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button-yellow {
+  width: 215px;
+  background: linear-gradient(135deg, #ddc954 0%, #ffd700 100%);
+  color: #686e57;
+}
+
+.button-yellow:hover {
+  background: linear-gradient(135deg, #ffe865 0%, #ffae00 100%);
+}
+
+.button-orange {
+  width: 155px;
+  background: linear-gradient(135deg, #ff6b26 0%, #ff5e02 100%);
+  color: #edc7b9;
+}
+
+.button-orange:hover {
+  background: linear-gradient(135deg, #e65310 0%, #ce4b00 100%);
+}
+
+.button-grey {
+  width: 155px;
+  background-color: #6c757d;
+  color: #bac0cc;
+}
+
+.button-grey:hover {
+  background-color: #464c52;
+}
+
+.button:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #424242 0%, #353535 100%);
+  color: #696969;
+}
+
+.button:disabled::before {
+  height: 0%;
+}
