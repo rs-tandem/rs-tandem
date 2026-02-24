@@ -1,3 +1,5 @@
+@import '../../styles/variables.css';
+
 .button {
   position: relative;
   overflow: hidden;
@@ -6,7 +8,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px var(--color-dark-shadow);
   max-height: 40px;
   min-height: 40px;
   user-select: none;
@@ -20,7 +22,7 @@
   left: 0;
   right: 0;
   height: 30%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(180deg, var(--color-btn-glare) 0%, var(--color-alpha) 100%);
   border-radius: 0px;
   pointer-events: none;
 }
@@ -35,28 +37,44 @@
 
 .button-yellow {
   width: 215px;
-  background: linear-gradient(135deg, #ddc954 0%, #ffd700 100%);
-  color: #686e57;
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-yellow-light) 0%,
+    var(--color-btn-yellow-dark) 100%
+  );
+  color: var(--color-text-dark);
 }
 
 .button-yellow:hover {
-  background: linear-gradient(135deg, #ffe865 0%, #ffae00 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-yellow-dark) 0%,
+    var(--color-btn-yellow-dark) 100%
+  );
 }
 
 .button-orange {
   width: 155px;
-  background: linear-gradient(135deg, #ff6b26 0%, #ff5e02 100%);
-  color: #edc7b9;
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-orange) 0%,
+    var(--color-btn-orange-dark) 100%
+  );
+  color: var(--color-text-white);
 }
 
 .button-orange:hover {
-  background: linear-gradient(135deg, #e65310 0%, #ce4b00 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-orange-dark) 0%,
+    var(--color-btn-orange-dark) 100%
+  );
 }
 
 .button-grey {
   width: 155px;
   background-color: #6c757d;
-  color: #bac0cc;
+  color: var(--color-text-light);
 }
 
 .button-grey:hover {
@@ -67,8 +85,8 @@
   opacity: 0.4;
   pointer-events: none;
   cursor: not-allowed;
-  background: linear-gradient(135deg, #424242 0%, #353535 100%);
-  color: #696969;
+  background: var(--color-disabled);
+  color: var(--color-text-light);
 }
 
 .button:disabled::before {

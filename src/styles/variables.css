@@ -8,6 +8,19 @@
   --color-bg-light: #f8fafb;
   --color-bg-dark: #152935;
   --color-accent: #82cfff;
+  --color-text-light: #a7b3c1;
+  --color-text-dark: #686e57;
+  --color-disabled: #464c52;
+  --color-btn-orange: #ff6b26;
+  --color-btn-orange-light: #ffae00;
+  --color-btn-orange-dark: #ff5e02;
+  --color-btn-yellow-light: #ffe865;
+  --color-btn-yellow-dark: #ffae00;
+  --color-btn-glare: rgba(255, 255, 255, 0.8);
+  --color-dark-shadow: rgba(0, 0, 0, 0.5);
+  --color-alpha: rgba(0, 0, 0, 0);
+  --color-text-white: white;
+  --color-text-white-alpha: rgba(255, 255, 255, 0.521);
 
   /* Шрифты */
   --font-regular: 16px 'Poppins', sans-serif;
