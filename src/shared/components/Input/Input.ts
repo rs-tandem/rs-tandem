@@ -1,5 +1,5 @@
 import './Input.css';
-import { DOMHelper } from '../utils/createElement';
+import { DOMHelper } from '../../utils/createElement';
 
 export class Input {
   private element: HTMLInputElement;

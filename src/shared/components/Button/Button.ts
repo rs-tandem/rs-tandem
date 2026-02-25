@@ -1,5 +1,5 @@
 import './Button.css';
-import { DOMHelper } from '../utils/createElement';
+import { DOMHelper } from '../../utils/createElement';
 
 export type ButtonType = 'orange' | 'grey' | 'yellow' | 'green';
 
