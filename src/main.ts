@@ -1,3 +1,3 @@
 import './styles/main.css';
-
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `Hi app`;
+import './core/router/routes';
+// document.querySelector<HTMLDivElement>('#app')!.innerHTML = `Hi app`;;
