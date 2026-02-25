@@ -1,0 +1,94 @@
+@import '../../../styles/variables.css';
+
+.button {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 8px var(--color-dark-shadow);
+  max-height: 40px;
+  min-height: 40px;
+  user-select: none;
+  transition: all 0.1s ease;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, var(--color-btn-glare) 0%, var(--color-alpha) 100%);
+  border-radius: 0px;
+  pointer-events: none;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button-yellow {
+  width: 215px;
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-yellow-light) 0%,
+    var(--color-btn-yellow-dark) 100%
+  );
+  color: var(--color-text-dark);
+}
+
+.button-yellow:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-yellow-dark) 0%,
+    var(--color-btn-yellow-dark) 100%
+  );
+}
+
+.button-orange {
+  width: 155px;
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-orange) 0%,
+    var(--color-btn-orange-dark) 100%
+  );
+  color: var(--color-text-white);
+}
+
+.button-orange:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-orange-dark) 0%,
+    var(--color-btn-orange-dark) 100%
+  );
+}
+
+.button-grey {
+  width: 155px;
+  background-color: #6c757d;
+  color: var(--color-text-light);
+}
+
+.button-grey:hover {
+  background-color: #464c52;
+}
+
+.button:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+  background: var(--color-disabled);
+  color: var(--color-text-light);
+}
+
+.button:disabled::before {
+  height: 0%;
+}

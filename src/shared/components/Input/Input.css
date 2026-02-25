@@ -1,0 +1,41 @@
+@import '../../../styles/variables.css';
+
+.input-wrapper {
+  position: relative;
+  max-width: 316px;
+  width: 100%;
+  padding: 1px;
+  background: var(--color-bg-light);
+  border-radius: 4px;
+}
+
+.input-wrapper .input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--color-bg-dark);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
+
+.input-wrapper .input:focus {
+  outline: none;
+  box-shadow: 3px 3px 10px var(--color-bg-dark);
+}
+
+.input-wrapper .input::placeholder {
+  color: var(--color-text-white-alpha);
+}
+
+.input-wrapper.error {
+  background: var(--color-error);
+}
+
+/*Костыль, чтобы фон не перекрашивался при автозаполнении*/
+.input-wrapper .input:-webkit-autofill,
+.input-wrapper .input:-webkit-autofill:hover,
+.input-wrapper .input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg-dark) inset !important;
+  -webkit-text-fill-color: var(--color-text-white) !important;
+}
