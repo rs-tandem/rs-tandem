@@ -1,4 +1,5 @@
 import { DOMHelper } from '../utils/createElement';
+import './header.css';
 
 export class Header {
   private readonly element: HTMLElement;
@@ -14,6 +15,9 @@ export class Header {
     const left = DOMHelper.createElement('div', 'header-left');
     const logo = DOMHelper.createElement('div', 'logo', 'JS');
     const logoText = DOMHelper.createElement('div', 'logo-text');
+    const text = document.createTextNode('Interview');
+    const accent = DOMHelper.createElement('span', 'accent', 'Prep');
+    logoText.append(text, accent);
     left.append(logo, logoText);
 
     const right = DOMHelper.createElement('div', 'header-right');

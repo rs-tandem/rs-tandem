@@ -21,19 +21,39 @@
   height: 38px;
   background: var(--color-secondary);
   color: var(--color-neutral);
-  font-weight: bold;
-  font-size: 20px;
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-semibold);
+  font-weight: var(--font-weight-bold);
+
+  border-radius: 10px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px var(--color-dark-shadow);
 }
 .logo-text {
-  font-size: 24px;
-  font-weight: 600;
-  color: white;
+  font-family: var(--font-family);
+  font-size: var(--font-size-bold);
+  font-weight: var(--font-weight-semibold);
+
+  color: var(--color-text-white);
+}
+
+.logo-text .accent {
+  color: var(--color-secondary);
 }
 .header-right {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 14px;
 }

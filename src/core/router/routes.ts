@@ -27,11 +27,6 @@ export function createRoutes(layout: Layout) {
         const page = DOMHelper.createElement('section', 'page');
         page.append(DOMHelper.createElement('h1', '', '404 Not Found'));
 
-        const link = DOMHelper.createElement('a', '', 'Home');
-        link.setAttribute('href', '/');
-        link.setAttribute('data-vanilla-route-link', 'spa');
-
-        page.append(link);
         layout.renderPage(page);
         return page;
       },
