@@ -7,3 +7,7 @@ Interview Prep - это помощник в подготовке к технич
 - [YekaterinaAlex](https://github.com/YekaterinaAlex)
 - [S-Arashu](https://github.com/S-Arashu)
 - [Pavel](https://github.com/oreopk)
+
+## Деплой
+
+[interview-prep-rs-tandem.netlify.app](https://interview-prep-rs-tandem.netlify.app/)
