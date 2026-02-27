@@ -1,0 +1,3 @@
+# Day 3
+
+Started making the global Header component for the app. Created a custom Router wrapper, but during review it turned out that it was unnecessary. I manually inserted the page inside element() and returned it. That caused a double render. AI helped me to understand that vanila-routing automatically inserts the element returned from element() into the target container. I refactored the code according to the comments in PR. Waiting for a review. S-Arashu left me very helpful comments.It helped me to understand SPA routing principles.I appreciate the detailed feedback and will try to aplly all suggested changes.
