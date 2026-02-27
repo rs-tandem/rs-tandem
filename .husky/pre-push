@@ -1,1 +1,1 @@
-pnpm lint && npx validate-branch-name -r "^(rs-tandem|main|develop)$|^(feat|fix|chore)/RS-TD-\\d+_.+$"
+pnpm lint && npx validate-branch-name -r "^(rs-tandem|main|develop)$|^(feat|fix|chore|ci)/RS-TD-\\d+_.+$"
