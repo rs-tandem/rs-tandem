@@ -8,8 +8,16 @@ export class Button {
 
   private clickHandler?: () => void;
 
-  constructor(text: string, typeButton: ButtonType = 'grey', onClick?: () => void) {
-    this.element = DOMHelper.createElement('button', `button button-${typeButton}`, text);
+  constructor(
+    text: string,
+    typeButton: ButtonType = 'grey',
+    onClick?: () => void,
+  ) {
+    this.element = DOMHelper.createElement(
+      'button',
+      `button button-${typeButton}`,
+      text,
+    );
 
     if (onClick) {
       this.element.addEventListener('click', onClick);
