@@ -1,6 +1,4 @@
-import { Router } from '../../core/router/Router';
-import { Button } from '../components';
-import { DOMHelper } from '../utils/createElement';
+import { DOMHelper } from '../../utils/createElement';
 import './header.css';
 
 export class Header {
@@ -23,10 +21,13 @@ export class Header {
     left.append(logo, logoText);
 
     const right = DOMHelper.createElement('div', 'header-right');
-    const homeButton = new Button('HOME', 'grey', () => {
-      Router.navigate('/');
-    });
-    right.append(homeButton.getElement());
+
+    const homeLink = DOMHelper.createElement('a', 'button button-grey', 'HOME');
+    homeLink.setAttribute('href', '/');
+    homeLink.setAttribute('data-vanilla-route-link', 'spa');
+
+    right.append(homeLink);
+
     container.append(left, right);
     this.element.append(container);
   }

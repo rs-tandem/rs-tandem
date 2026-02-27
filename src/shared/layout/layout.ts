@@ -1,6 +1,6 @@
 import { DOMHelper } from '../utils/createElement';
 
-import { Header } from './header';
+import { Header } from './Header/header';
 
 export class Layout {
   private readonly root: HTMLElement;
@@ -15,11 +15,11 @@ export class Layout {
     this.root.append(header.getElement(), this.content);
   }
 
-  public renderPage(page: HTMLElement): void {
-    this.content.replaceChildren(page);
-  }
-
   public getElement(): HTMLElement {
     return this.root;
+  }
+
+  public getContentElement(): HTMLElement {
+    return this.content;
   }
 }

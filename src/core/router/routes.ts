@@ -1,14 +1,16 @@
+import { BrowserRoute } from 'vanilla-routing';
+
 import { Layout } from '../../shared/layout/layout';
 import { DOMHelper } from '../../shared/utils/createElement';
 
-export function createRoutes(layout: Layout) {
-  return [
+export function initRoutes(_layout: Layout): void {
+  const routes = [
     {
       pathname: '/',
       element: () => {
         const page = DOMHelper.createElement('section', 'page');
         page.append(DOMHelper.createElement('h1', '', 'Main Page'));
-        layout.renderPage(page);
+
         return page;
       },
     },
@@ -17,7 +19,7 @@ export function createRoutes(layout: Layout) {
       element: () => {
         const page = DOMHelper.createElement('section', 'page');
         page.append(DOMHelper.createElement('h1', '', 'About Page'));
-        layout.renderPage(page);
+
         return page;
       },
     },
@@ -27,9 +29,10 @@ export function createRoutes(layout: Layout) {
         const page = DOMHelper.createElement('section', 'page');
         page.append(DOMHelper.createElement('h1', '', '404 Not Found'));
 
-        layout.renderPage(page);
         return page;
       },
     },
   ];
+  // BrowserRoute(routes, {target: layout.getContentElement(),});
+  BrowserRoute(routes);
 }
