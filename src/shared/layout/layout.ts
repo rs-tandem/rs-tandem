@@ -7,12 +7,14 @@ export class Layout {
 
   private readonly content: HTMLElement;
 
+  private readonly header: Header;
+
   constructor() {
     this.root = DOMHelper.createElement('div', 'layout');
     this.content = DOMHelper.createElement('main', 'main-content');
 
-    const header = new Header();
-    this.root.append(header.getElement(), this.content);
+    this.header = new Header();
+    this.root.append(this.header.getElement(), this.content);
   }
 
   public getElement(): HTMLElement {
@@ -21,5 +23,9 @@ export class Layout {
 
   public getContentElement(): HTMLElement {
     return this.content;
+  }
+
+  public getHeader(): Header {
+    return this.header;
   }
 }

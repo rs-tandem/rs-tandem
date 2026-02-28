@@ -11,6 +11,22 @@
   align-items: center;
 }
 
+.header-title {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-semibold);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-text-white);
+  letter-spacing: 0.2px;
+}
+
+.logo-link .header-title .accent {
+  color: var(--color-btn-yellow-dark);
+}
+.header-title .accent {
+  color: var(--color-btn-yellow-dark);
+  font-weight: var(--font-weight-bold);
+}
 .header-left {
   display: flex;
   align-items: center;
@@ -41,16 +57,9 @@
   transform: scale(1.05);
   box-shadow: 0 4px 10px var(--color-dark-shadow);
 }
-.logo-text {
-  font-family: var(--font-family);
-  font-size: var(--font-size-bold);
-  font-weight: var(--font-weight-semibold);
-
-  color: var(--color-text-white);
-}
-
-.logo-text .accent {
-  color: var(--color-secondary);
+.logo-link {
+  text-decoration: none;
+  color: inherit;
 }
 .header-right {
   display: flex;
