@@ -39,7 +39,3 @@ export function initRoutes(layout: Layout): void {
   // BrowserRoute(routes, {target: layout.getContentElement(),});
   BrowserRoute(routes);
 }
-export function navigateTo(path: string): void {
-  window.history.pushState({}, '', path);
-  window.dispatchEvent(new PopStateEvent('popstate'));
-}

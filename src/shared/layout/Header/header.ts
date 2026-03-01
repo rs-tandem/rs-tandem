@@ -1,3 +1,5 @@
+import { Router } from 'vanilla-routing';
+
 import { Button } from '../../components';
 import { DOMHelper } from '../../utils/createElement';
 import './header.css';
@@ -40,8 +42,7 @@ export class Header {
     });
 
     const homeButton = new Button('HOME', 'grey', () => {
-      window.history.pushState({}, '', '/');
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      Router.go('/');
     });
 
     right.append(settingsButton.getElement(), homeButton.getElement());
