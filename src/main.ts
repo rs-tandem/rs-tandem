@@ -1,3 +1,12 @@
 import './styles/main.css';
-import './core/router/routes';
-// document.querySelector<HTMLDivElement>('#app')!.innerHTML = `Hi app`;;
+
+import { initRoutes } from './core/router/routes';
+import { Layout } from './shared/layout/layout';
+
+const root = document.querySelector<HTMLElement>('#app');
+if (!root) throw new Error('#app not found');
+
+const layout = new Layout();
+root.replaceChildren(layout.getElement());
+
+initRoutes(layout);

@@ -1,0 +1,68 @@
+.app-header {
+  width: 100%;
+  padding: 16px 40px;
+  background: linear-gradient(180deg, #2c3e50 0%, #1f2d3a 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-semibold);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-text-white);
+  letter-spacing: 0.2px;
+}
+
+.logo-link .header-title .accent {
+  color: var(--color-btn-yellow-dark);
+}
+.header-title .accent {
+  color: var(--color-btn-yellow-dark);
+  font-weight: var(--font-weight-bold);
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo {
+  width: 38px;
+  height: 38px;
+  background: var(--color-secondary);
+  color: var(--color-neutral);
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-semibold);
+  font-weight: var(--font-weight-bold);
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px var(--color-dark-shadow);
+}
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
