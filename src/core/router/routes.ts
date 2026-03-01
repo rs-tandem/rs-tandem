@@ -1,34 +1,41 @@
 import { BrowserRoute } from 'vanilla-routing';
 
-const routes = [
-  {
-    pathname: '/',
-    element: () => {
-      const div = document.createElement('div');
-      div.innerHTML = '<h1>Main Page</h1>';
-      return div;
-    },
-  },
-  {
-    pathname: '/about',
-    element: () => {
-      const div = document.createElement('div');
-      div.innerHTML = '<h1>About Page</h1>';
-      return div;
-    },
-  },
-  {
-    pathname: '*',
-    element: () => {
-      const link = document.createElement('a');
-      link.setAttribute('data-vanilla-route-link', 'spa');
-      link.setAttribute('href', '/');
-      link.textContent = 'Home';
-      return link;
-    },
-  },
-];
+import { Layout } from '../../shared/layout/layout';
+import { DOMHelper } from '../../shared/utils/createElement';
 
-BrowserRoute(routes);
+export function initRoutes(layout: Layout): void {
+  const routes = [
+    {
+      pathname: '/',
+      element: () => {
+        layout.getHeader().setTitle('Interview', 'Prep');
+        const page = DOMHelper.createElement('section', 'page');
+        page.append(DOMHelper.createElement('h1', '', 'Main Page'));
 
-export const Router = routes;
+        return page;
+      },
+    },
+    {
+      pathname: '/tasks',
+      element: () => {
+        layout.getHeader().setTitle('Задания');
+        const page = DOMHelper.createElement('section', 'page');
+        page.append(DOMHelper.createElement('h1', '', 'Tasks Page'));
+
+        return page;
+      },
+    },
+    {
+      pathname: '*',
+      element: () => {
+        layout.getHeader().setTitle('Ошибка');
+        const page = DOMHelper.createElement('section', 'page');
+        page.append(DOMHelper.createElement('h1', '', '404 Not Found'));
+
+        return page;
+      },
+    },
+  ];
+  // BrowserRoute(routes, {target: layout.getContentElement(),});
+  BrowserRoute(routes);
+}
