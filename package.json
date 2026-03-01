@@ -43,6 +43,7 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
+    "firebase": "^12.10.0",
     "vanilla-routing": "^1.0.1"
   }
 }
