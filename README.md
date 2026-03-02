@@ -11,3 +11,8 @@ Interview Prep - это помощник в подготовке к технич
 ## Деплой
 
 [interview-prep-rs-tandem.netlify.app](https://interview-prep-rs-tandem.netlify.app/)
+
+## Meeting notes
+
+[First](https://github.com/rs-tandem/rs-tandem/blob/main/meeting-notes/Meeting-Notes-02-14.md)
+[Second](https://github.com/rs-tandem/rs-tandem/blob/main/meeting-notes/Meeting-Notes-03-02.md)
