@@ -1,0 +1,42 @@
+:root {
+  /* Цвета */
+  --color-primary: #3697c1;
+  --color-secondary: #ffc107;
+  --color-success: #4ca330;
+  --color-error: #ff7f2a;
+  --color-neutral: #2c3e30;
+  --color-bg-light: #f8fafb;
+  --color-bg-dark: #152935;
+  --color-accent: #82cfff;
+  --color-text-light: #a7b3c1;
+  --color-text-dark: #686e57;
+  --color-disabled: #464c52;
+  --color-btn-orange: #ff6b26;
+  --color-btn-orange-light: #ffae00;
+  --color-btn-orange-dark: #ff5e02;
+  --color-btn-yellow-light: #ffe865;
+  --color-btn-yellow-dark: #ffae00;
+  --color-btn-glare: rgba(255, 255, 255, 0.8);
+  --color-dark-shadow: rgba(0, 0, 0, 0.5);
+  --color-alpha: rgba(0, 0, 0, 0);
+  --color-text-white: white;
+  --color-text-white-alpha: rgba(255, 255, 255, 0.521);
+
+  /* Шрифты */
+  --font-regular: 16px 'Poppins', sans-serif;
+  --font-semibold: 20px 'Poppins', sans-serif;
+  --font-bold: 32px 'Poppins', sans-serif;
+
+  /* Семейство шрифтов */
+  --font-family: 'Poppins', sans-serif;
+
+  /* Размеры шрифтов */
+  --font-size-regular: 16px;
+  --font-size-semibold: 20px;
+  --font-size-bold: 32px;
+
+  /* Вес шрифтов */
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}

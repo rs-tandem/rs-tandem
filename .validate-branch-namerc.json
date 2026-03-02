@@ -1,0 +1,6 @@
+{
+  "validate-branch-name": {
+    "pattern": "^(rs-tandem|main|develop)$|^(feat|fix|chore)/RS-TD-\\d+_.+$",
+    "errorMsg": "Branch name must follow the pattern: feat/RS-TD-01_description or fix/RS-TD-02_description"
+  }
+}
