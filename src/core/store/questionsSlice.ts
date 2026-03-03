@@ -1,13 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { type QuestionsState } from './types';
+
+const initialState: QuestionsState = {
+  list: [],
+  currentIndex: 0,
+  results: null,
+  loading: false,
+};
+
 const questionsSlice = createSlice({
   name: 'questions',
-  initialState: {
-    list: [],
-    currentIndex: 0,
-    results: null,
-    loading: false,
-  },
+  initialState,
   reducers: {
     setQuestions: (state, action) => ({
       ...state,
