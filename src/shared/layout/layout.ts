@@ -12,7 +12,8 @@ export class Layout {
   constructor() {
     this.root = DOMHelper.createElement('div', 'layout');
     this.content = DOMHelper.createElement('main', 'main-content');
-
+    this.content.setAttribute('data-vanilla-route-ele', 'router-wrap');
+    this.content.id = 'app';
     this.header = new Header();
     this.root.append(this.header.getElement(), this.content);
   }

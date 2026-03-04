@@ -1,5 +1,6 @@
 import { BrowserRoute } from 'vanilla-routing';
 
+import { TopicsPage } from '../../features/topics/TopicsPage';
 import { Layout } from '../../shared/layout/layout';
 import { DOMHelper } from '../../shared/utils/createElement';
 
@@ -9,8 +10,7 @@ export function initRoutes(layout: Layout): void {
       pathname: '/',
       element: () => {
         layout.getHeader().setTitle('Interview', 'Prep');
-        const page = DOMHelper.createElement('section', 'page');
-        page.append(DOMHelper.createElement('h1', '', 'Main Page'));
+        const page = new TopicsPage().getElement();
 
         return page;
       },
@@ -36,6 +36,7 @@ export function initRoutes(layout: Layout): void {
       },
     },
   ];
-  // BrowserRoute(routes, {target: layout.getContentElement(),});
+
+  // BrowserRoute(routes, { target: layout.getContentElement() });
   BrowserRoute(routes);
 }

@@ -4,21 +4,24 @@ export const TOPICS: Topic[] = [
   {
     id: 'core-js',
     title: 'Основы JavaScript',
-    imageUrl: '/assets/img/js_logo.png',
+    imageUrl: new URL('../../assets/img/js.svg', import.meta.url).toString(),
   },
   {
     id: 'closures',
     title: 'Замыкания',
-    imageUrl: '/assets/img/closures.png',
+    imageUrl: new URL(
+      '../../assets/img/closures.svg',
+      import.meta.url,
+    ).toString(),
   },
   {
     id: 'asynchrony',
     title: 'Асинхронность',
-    imageUrl: '/assets/img/async.png',
+    imageUrl: new URL('../../assets/img/async.png', import.meta.url).toString(),
   },
   {
     id: 'data-structures',
     title: 'Структуры данных',
-    imageUrl: '/assets/img/tree.png',
+    imageUrl: new URL('../../assets/img/tree.png', import.meta.url).toString(),
   },
 ];
