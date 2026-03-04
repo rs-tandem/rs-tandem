@@ -15,3 +15,18 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
+#app {
+  height: 100%;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+}

@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this */
-import type { User } from 'firebase/auth';
 
 import {
   registerUser,
@@ -7,7 +6,9 @@ import {
   logoutUser,
   onAuthChange,
   getErrorMessage,
-} from '../../core/router/firebase/auth';
+  signInWithGoogle,
+  type User,
+} from '../../core/firebase/auth';
 
 export class AuthService {
   private currentUser: User | null = null;
@@ -17,7 +18,6 @@ export class AuthService {
   public init(): void {
     this.unsubscribe = onAuthChange((user) => {
       this.currentUser = user;
-      console.log('Auth state changed:', user ? user.email : 'No user');
     });
   }
 
@@ -46,8 +46,21 @@ export class AuthService {
     }
   }
 
+  public async loginWithGoogle(): Promise<{
+    success: boolean;
+    error?: string;
+  }> {
+    try {
+      await signInWithGoogle();
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  }
+
   public async logout(): Promise<void> {
     await logoutUser();
+    this.currentUser = null;
   }
 
   public getUser(): User | null {
@@ -56,6 +69,10 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     return this.currentUser !== null;
+  }
+
+  public setUser(user: User | null): void {
+    this.currentUser = user;
   }
 
   public destroy(): void {
