@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "firebase": "^12.10.0",
+    "@reduxjs/toolkit": "^2.11.2",
     "vanilla-routing": "^1.0.1"
   }
 }
