@@ -1,0 +1,249 @@
+.auth-page {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 100%;
+  background-color: #1a2332;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+  flex: 1;
+  background-color: #1e2d42;
+  border-radius: 16px;
+  padding: 48px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: visible;
+}
+
+.auth-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #8a9bb5;
+  margin: 0 0 8px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-wrapper {
+  width: 100%;
+}
+
+.input-wrapper .input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #243447;
+  border: 1.5px solid #2e4060;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.input-wrapper .input::placeholder {
+  color: #5a7192;
+}
+
+.input-wrapper .input:focus {
+  border-color: #f07c2a;
+}
+
+.input-wrapper.error .input {
+  border-color: #e05555;
+}
+
+.auth-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.auth-buttons .button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+}
+
+.auth-buttons .button:hover {
+  opacity: 0.9;
+}
+
+.auth-buttons .button:active {
+  transform: scale(0.98);
+}
+
+.auth-buttons .button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-orange {
+  background-color: #f07c2a;
+  color: #ffffff;
+}
+
+.button-grey {
+  background-color: #2e4060;
+  color: #c5d4e8;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: #2e4060;
+}
+
+.divider-text {
+  font-size: 13px;
+  color: #5a7192;
+  white-space: nowrap;
+}
+
+.google-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2e4060;
+  color: #c5d4e8;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.google-button:hover {
+  opacity: 0.85;
+}
+
+.forgot-password {
+  display: inline-block;
+  text-align: center;
+  font-size: 13px;
+  color: #8a9bb5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.forgot-password:hover {
+  color: #f07c2a;
+}
+
+.error-message {
+  display: none;
+  font-size: 13px;
+  color: #e05555;
+  padding: 6px 10px;
+  background-color: rgba(224, 85, 85, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #e05555;
+}
+
+.error-message.show {
+  display: block;
+}
+
+.auth-form.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.auth-mascot {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.auth-mascot::before {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(
+    circle,
+    rgba(100, 200, 255, 0.35) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.mascot-image {
+  position: relative;
+  width: 133%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(100, 200, 255, 0.4));
+}
+
+@media (max-width: 640px) {
+  .auth-content {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    gap: 24px;
+  }
+
+  .auth-mascot {
+    order: -1;
+  }
+
+  .mascot-image {
+    max-width: 160px;
+  }
+
+  .auth-title {
+    font-size: 22px;
+  }
+}
