@@ -48,6 +48,15 @@ export default tseslint.config(
         { max: 60, skipBlankLines: true, skipComments: true },
       ],
       complexity: ["error", { max: 400 }],
+      'import-x/no-unresolved': [
+        'error',
+        {
+          ignore: [
+            '^firebase/',
+            '^@firebase/',
+          ],
+        },
+      ],
 
       "no-magic-numbers": "error",
       "no-console": "warn",
