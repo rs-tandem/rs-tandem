@@ -10,8 +10,8 @@
   cursor: pointer;
 
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    opacity 0.2s,
+    transform 0.1s;
 }
 
 .topic-card:hover {
@@ -46,7 +46,11 @@
   font-weight: var(--font-weight-bold);
 }
 .topic-core-js {
-  background: var(--color-btn-yellow-dark);
+  background: linear-gradient(
+    135deg,
+    var(--color-btn-orange),
+    var(--color-btn-orange-light)
+  );
 }
 .topic-closures {
   background: linear-gradient(135deg, #3fa9f5, #1c75bc);
@@ -55,7 +59,7 @@
   background: linear-gradient(135deg, #1e3c72, #2a5298);
 }
 .topic-data-structures {
-  background: var(--color-success);
+  background: linear-gradient(135deg, var(--color-success), #6cdb78);
 }
 .topic-card:hover .topic-card__icon {
   transform: translateY(-1px);
