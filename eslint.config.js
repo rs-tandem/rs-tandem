@@ -17,6 +17,16 @@ export default tseslint.config(
   // Main configurations from airbnb-extended
   ...configs.base.all,
 
+  {
+  settings: {
+    'import-x/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.png', '.jpg', '.jpeg', '.svg'],
+      },
+    },
+  },
+},
+
   // Project-specific language options
   {
     files: ["src/**/*.ts", "src/**/*.tsx"],

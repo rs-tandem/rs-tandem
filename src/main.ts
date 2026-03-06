@@ -11,7 +11,7 @@ const root = document.querySelector<HTMLElement>('#app');
 if (!root) throw new Error('#app not found');
 
 const layout = new Layout();
-root.replaceChildren(layout.getElement());
+document.body.replaceChildren(layout.getElement());
 
 let routesInitialized = false;
 
