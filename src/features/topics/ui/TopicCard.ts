@@ -1,6 +1,5 @@
-import { DOMHelper } from '../../shared/utils/createElement';
-
-import type { Topic } from './topics.types';
+import { DOMHelper } from '../../../shared/utils/createElement';
+import type { Topic } from '../topics.types';
 
 import './TopicCard.css';
 
@@ -13,7 +12,7 @@ export class TopicCard {
   }
 
   private render(): void {
-    this.element.href = `/tasks?topic=${encodeURIComponent(this.topic.id)}`;
+    this.element.href = `/topic/${this.topic.id}`;
     this.element.setAttribute('data-vanilla-route-link', 'spa');
 
     const content = DOMHelper.createElement('div', 'topic-card__content');

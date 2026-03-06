@@ -1,7 +1,7 @@
-import { DOMHelper } from '../../shared/utils/createElement';
+import { DOMHelper } from '../../../shared/utils/createElement';
+import { TOPICS } from '../TopicsService';
 
 import { TopicCard } from './TopicCard';
-import { TOPICS } from './TopicsService';
 
 import './TopicsPage.css';
 
@@ -34,7 +34,7 @@ export class TopicsPage {
 
     const image = DOMHelper.createElement('img');
     image.src = new URL(
-      '../../assets/img/mascot_pointing_transparent.png',
+      '../../../assets/img/mascot_pointing_transparent.png',
       import.meta.url,
     ).toString();
     image.className = 'topics-page__image';

@@ -8,7 +8,7 @@
   min-height: 150px;
   padding: 24px 26px;
   border-radius: 28px;
-
+  cursor: pointer;
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;
