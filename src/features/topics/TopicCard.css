@@ -1,36 +1,54 @@
 .topic-card {
+  position: relative;
+
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0 18px;
-  height: 120px;
-  border-radius: 18px;
+  justify-content: space-between;
+
+  min-height: 150px;
+  padding: 24px 26px;
+  border-radius: 28px;
 
   text-decoration: none;
+  overflow: hidden;
   cursor: pointer;
 
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 40px rgba(0, 0, 0, 0.28);
+
   transition:
-    opacity 0.2s,
-    transform 0.1s;
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .topic-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 52px rgba(0, 0, 0, 0.34);
 }
 .topic-card__content {
   display: flex;
   align-items: center;
-
-  gap: 14px;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
 }
-
 .topic-card__icon {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
-  padding: 10px;
-  border-radius: 10px;
+  flex-shrink: 0;
 }
 
 .topic-card__title {
@@ -46,20 +64,65 @@
   font-weight: var(--font-weight-bold);
 }
 .topic-core-js {
-  background: linear-gradient(
-    135deg,
-    var(--color-btn-orange),
-    var(--color-btn-orange-light)
-  );
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 178, 42, 0.38),
+      transparent 45%
+    ),
+    linear-gradient(135deg, rgba(255, 157, 0, 0.32), rgba(45, 26, 4, 0.86));
+  border-color: rgba(255, 185, 67, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 180, 0.16),
+    0 0 0 1px rgba(255, 176, 57, 0.18),
+    0 0 28px rgba(255, 166, 0, 0.22),
+    0 18px 40px rgba(0, 0, 0, 0.3);
 }
+
 .topic-closures {
-  background: linear-gradient(135deg, #3fa9f5, #1c75bc);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(76, 164, 255, 0.34),
+      transparent 45%
+    ),
+    linear-gradient(135deg, rgba(37, 113, 228, 0.3), rgba(9, 33, 76, 0.88));
+  border-color: rgba(89, 183, 255, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(180, 228, 255, 0.14),
+    0 0 0 1px rgba(71, 170, 255, 0.14),
+    0 0 26px rgba(61, 156, 255, 0.2),
+    0 18px 40px rgba(0, 0, 0, 0.3);
 }
 .topic-asynchrony {
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(189, 98, 255, 0.3),
+      transparent 45%
+    ),
+    linear-gradient(135deg, rgba(103, 57, 201, 0.28), rgba(30, 15, 66, 0.9));
+  border-color: rgba(190, 127, 255, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(228, 196, 255, 0.14),
+    0 0 0 1px rgba(178, 108, 255, 0.12),
+    0 0 26px rgba(173, 89, 255, 0.18),
+    0 18px 40px rgba(0, 0, 0, 0.3);
 }
 .topic-data-structures {
-  background: linear-gradient(135deg, var(--color-success), #6cdb78);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(94, 255, 140, 0.26),
+      transparent 45%
+    ),
+    linear-gradient(135deg, rgba(38, 170, 81, 0.28), rgba(10, 57, 28, 0.9));
+  border-color: rgba(104, 255, 144, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(193, 255, 212, 0.12),
+    0 0 0 1px rgba(87, 241, 130, 0.1),
+    0 0 24px rgba(72, 236, 118, 0.16),
+    0 18px 40px rgba(0, 0, 0, 0.3);
 }
 .topic-card:hover .topic-card__icon {
   transform: translateY(-1px);
