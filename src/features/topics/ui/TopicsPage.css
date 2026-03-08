@@ -27,7 +27,7 @@
   justify-content: flex-end;
   align-items: center;
 
-  overflow: hidden;
+  overflow: visible;
   height: 550px;
 }
 
