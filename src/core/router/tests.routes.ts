@@ -1,6 +1,7 @@
+import { TestsPage } from '../../features/tests/TestPage';
 import { Layout } from '../../shared/layout/layout';
 
-import { createStubPage, protectedPage } from './route-helpers';
+import { protectedPage } from './route-helpers';
 
 export function testsRoutes(layout: Layout) {
   return [
@@ -9,7 +10,7 @@ export function testsRoutes(layout: Layout) {
       element: () =>
         protectedPage(() => {
           layout.getHeader().setTitle('Тесты');
-          return createStubPage('Tests');
+          return new TestsPage().getElement();
         }),
     },
   ];
