@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
 
-  background-color: #1a2332;
+  background-color: var(--color-bg-tests);
 }
 .tests-page__card {
   width: 100%;
@@ -16,10 +16,10 @@
   border-radius: 24px;
 
   background: var(--color-bg-dark);
-  border: 1px solid rgba(57, 255, 20, 0.7);
+  border: 1px solid var(--color-accent-green);
 
   box-shadow:
-    0 0 14px rgba(57, 255, 20, 0.7),
+    0 0 14px var(--color-accent-green),
     0 20px 40px rgba(0, 0, 0, 0.28);
 
   display: flex;
@@ -28,7 +28,7 @@
 }
 
 .tests-page__question {
-  color: rgba(57, 255, 20, 0.7);
+  color: var(--color-accent-green);
   font-size: var(--font-size-semibold);
   padding: 20px;
   border-radius: 16px;
@@ -67,16 +67,16 @@
 }
 .tests-page__option--correct {
   background: rgba(57, 255, 20, 0.2);
-  border-color: rgba(57, 255, 20, 0.7);
+  border-color: var(--color-accent-green);
 
   box-shadow:
-    0 0 10px rgba(57, 255, 20, 0.4),
+    0 0 10px var(--color-accent-green),
     0 0 24px rgba(57, 255, 20, 0.25);
 }
 
 .tests-page__option--incorrect {
   background: rgba(255, 80, 80, 0.18);
-  border-color: rgba(255, 80, 80, 0.75);
+  border-color: var(--color-wrong-answer);
 
   box-shadow:
     0 0 10px rgba(255, 80, 80, 0.35),
@@ -91,7 +91,7 @@
 }
 
 .tests-page__explanation--error {
-  color: rgba(255, 80, 80, 0.75);
+  color: var(--color-wrong-answer);
 }
 .tests-page__next-button {
   margin-top: 8px;
@@ -102,7 +102,7 @@
 
   background: linear-gradient(
     135deg,
-    rgba(57, 255, 20, 0.9),
+    var(--color-accent-green),
     rgba(20, 120, 20, 0.95)
   );
 
@@ -119,6 +119,4 @@
 
 .tests-page__next-button:hover {
   transform: translateY(-2px);
-
-  box-shadow: 0 10px 22px rgba(57, 255, 20, 0.35);
 }
