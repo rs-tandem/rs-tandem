@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   // ignores
   {
-    ignores: ["node_modules/**", "dist/**", "build/**", "vite-env.d.ts"],
+    ignores: ["node_modules/**", "dist/**", "build/**", "vite-env.d.ts", "vitest.config.ts", "vitest.setup.ts"],
   },
 
   // airbnb-extended plugins
@@ -16,6 +16,16 @@ export default tseslint.config(
 
   // Main configurations from airbnb-extended
   ...configs.base.all,
+
+  {
+  settings: {
+    'import-x/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.png', '.jpg', '.jpeg', '.svg'],
+      },
+    },
+  },
+},
 
   // Project-specific language options
   {
@@ -38,6 +48,15 @@ export default tseslint.config(
         { max: 60, skipBlankLines: true, skipComments: true },
       ],
       complexity: ["error", { max: 400 }],
+      'import-x/no-unresolved': [
+        'error',
+        {
+          ignore: [
+            '^firebase/',
+            '^@firebase/',
+          ],
+        },
+      ],
 
       "no-magic-numbers": "error",
       "no-console": "warn",
