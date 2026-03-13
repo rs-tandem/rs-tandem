@@ -45,5 +45,12 @@
       "firebase/*": ["./node_modules/firebase/*"]
     }
   },
-  "include": ["src/**/*", "src/**/*.ts", "src/**/*.tsx", "src/vite-env.d.ts"]
+  "include": [
+    "src/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/vite-env.d.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ]
 }
