@@ -1,0 +1,124 @@
+.tests-page {
+  min-height: 100%;
+  padding: 48px 24px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #1a2332;
+}
+.tests-page__card {
+  width: 100%;
+  max-width: 760px;
+  padding: 32px;
+  border-radius: 24px;
+
+  background: var(--color-bg-dark);
+  border: 1px solid rgba(57, 255, 20, 0.7);
+
+  box-shadow:
+    0 0 14px rgba(57, 255, 20, 0.7),
+    0 20px 40px rgba(0, 0, 0, 0.28);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tests-page__question {
+  color: rgba(57, 255, 20, 0.7);
+  font-size: var(--font-size-semibold);
+  padding: 20px;
+  border-radius: 16px;
+  background: black;
+  white-space: pre-wrap;
+}
+.tests-page__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tests-page__option {
+  padding: 16px;
+  border-radius: 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+
+  color: var(--color-text-white);
+  font-size: var(--font-size-semibold);
+  font-weight: 700;
+  text-align: left;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.tests-page__option:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+.tests-page__option--correct {
+  background: rgba(57, 255, 20, 0.2);
+  border-color: rgba(57, 255, 20, 0.7);
+
+  box-shadow:
+    0 0 10px rgba(57, 255, 20, 0.4),
+    0 0 24px rgba(57, 255, 20, 0.25);
+}
+
+.tests-page__option--incorrect {
+  background: rgba(255, 80, 80, 0.18);
+  border-color: rgba(255, 80, 80, 0.75);
+
+  box-shadow:
+    0 0 10px rgba(255, 80, 80, 0.35),
+    0 0 24px rgba(255, 80, 80, 0.2);
+}
+.tests-page__explanation {
+  padding: 16px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.tests-page__explanation--error {
+  color: rgba(255, 80, 80, 0.75);
+}
+.tests-page__next-button {
+  margin-top: 8px;
+  padding: 16px;
+
+  border: none;
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(57, 255, 20, 0.9),
+    rgba(20, 120, 20, 0.95)
+  );
+
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tests-page__next-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 22px rgba(57, 255, 20, 0.35);
+}
