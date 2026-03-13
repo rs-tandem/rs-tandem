@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   // ignores
   {
-    ignores: ["node_modules/**", "dist/**", "build/**", "vite-env.d.ts"],
+    ignores: ["node_modules/**", "dist/**", "build/**", "vite-env.d.ts", "vitest.config.ts", "vitest.setup.ts"],
   },
 
   // airbnb-extended plugins
