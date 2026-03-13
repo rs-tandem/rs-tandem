@@ -31,3 +31,14 @@ export function getTopicTitleById(topicId: string): string {
   const topic = TOPICS.find((item) => item.id === topicId);
   return topic?.title ?? 'Тема';
 }
+
+export const TOPIC_MAPPING: Record<string, string> = {
+  'core-js': 'basics',
+  closures: 'closures',
+  asynchrony: 'async',
+  'data-structures': 'structures',
+};
+
+export function getApiTopicId(topicId: string): string {
+  return TOPIC_MAPPING[topicId] || topicId;
+}

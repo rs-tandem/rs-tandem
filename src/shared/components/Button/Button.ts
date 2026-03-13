@@ -1,7 +1,7 @@
 import './Button.css';
 import { DOMHelper } from '../../utils/createElement';
 
-export type ButtonType = 'orange' | 'grey' | 'yellow' | 'green';
+export type ButtonType = 'orange' | 'grey' | 'yellow' | 'green' | 'blue';
 
 export class Button {
   private element: HTMLButtonElement;

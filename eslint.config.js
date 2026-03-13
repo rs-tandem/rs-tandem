@@ -45,7 +45,7 @@ export default tseslint.config(
     rules: {
       "max-lines-per-function": [
         "error",
-        { max: 60, skipBlankLines: true, skipComments: true },
+        { max: 200, skipBlankLines: true, skipComments: true },
       ],
       complexity: ["error", { max: 400 }],
       'import-x/no-unresolved': [

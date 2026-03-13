@@ -26,6 +26,7 @@
     "@commitlint/cli": "^20.3.0",
     "@commitlint/config-conventional": "^20.3.0",
     "@stylistic/eslint-plugin": "^3.1.0",
+    "@types/lodash": "^4.17.24",
     "eslint": "^9.39.2",
     "eslint-config-airbnb-extended": "^3.0.0",
     "eslint-config-prettier": "^10.1.8",
@@ -43,8 +44,9 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
-    "firebase": "^12.10.0",
     "@reduxjs/toolkit": "^2.11.2",
+    "firebase": "^12.10.0",
+    "lodash": "^4.17.23",
     "vanilla-routing": "^1.0.1"
   }
 }
