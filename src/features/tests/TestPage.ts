@@ -2,6 +2,7 @@ import { DOMHelper } from '../../shared/utils/createElement';
 
 import { getRandomQuestion, checkAnswer } from './tests.api';
 import type { Question } from './tests.types';
+import './tests-page.css';
 
 export class TestsPage {
   private readonly element: HTMLElement;
@@ -41,11 +42,9 @@ export class TestsPage {
 
   private render(): void {
     const card = DOMHelper.createElement('div', 'tests-page__card');
-    const title = DOMHelper.createElement('h1', 'tests-page__title', 'Тесты');
 
     this.explanationElement.hidden = true;
     card.append(
-      title,
       this.questionElement,
       this.optionsElement,
       this.explanationElement,
