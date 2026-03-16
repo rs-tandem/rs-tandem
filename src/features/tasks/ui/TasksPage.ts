@@ -29,7 +29,6 @@ export class TasksPage {
   constructor(private readonly topicId: string) {
     this.element = DOMHelper.createElement('section', 'tasks-page');
     this.render();
-    // this.loadRandomChallenge();
     this.loadRandomChallengeByTopic();
   }
 
@@ -41,7 +40,6 @@ export class TasksPage {
     );
 
     const newTaskBtn = new Button('Next Random Task', 'blue', () =>
-      // this.loadRandomChallenge(),
       this.loadRandomChallengeByTopic(),
     );
 
@@ -170,24 +168,9 @@ export class TasksPage {
     this.isLoading = true;
 
     try {
-      // Используем новый метод сервиса с передачей topicId
       this.currentChallenge = await ChallengeService.getRandomChallengeByTopic(
         this.topicId,
       );
-      this.updateTaskDisplay();
-    } catch {
-      /* empty */
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  private async loadRandomChallenge(): Promise<void> {
-    if (this.isLoading) return;
-    this.isLoading = true;
-
-    try {
-      this.currentChallenge = await ChallengeService.getRandomChallenge();
       this.updateTaskDisplay();
     } catch {
       /* empty */
@@ -245,7 +228,6 @@ export class TasksPage {
     this.resultsContainer.append(summary);
 
     if (result.results.length > ZERO) {
-      // const testsList = this.createTestsList(result.results);
       const testsList = DOMHelper.createElement(
         'div',
         'tasks-page__tests-list',

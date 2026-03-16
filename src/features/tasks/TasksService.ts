@@ -1,7 +1,5 @@
 import { isEqual } from 'lodash';
 
-import { getApiTopicId } from '../topicModes/ui/topics.data';
-
 import type { Challenge, CheckResult, TestCase } from './tasks.types';
 
 const API_BASE_URL = 'http://5.129.197.181/api/challenges';
@@ -16,8 +14,7 @@ export class ChallengeService {
   }
 
   static async getRandomChallengeByTopic(topicId: string): Promise<Challenge> {
-    const apiTopic = getApiTopicId(topicId);
-    const response = await fetch(`${API_BASE_URL}/topic/${apiTopic}/random`);
+    const response = await fetch(`${API_BASE_URL}/topic/${topicId}/random`);
     if (!response.ok) {
       throw new Error('Failed to fetch');
     }
@@ -25,22 +22,19 @@ export class ChallengeService {
   }
 
   static async getChallengesByTopic(topicId: string): Promise<Challenge[]> {
-    const apiTopic = getApiTopicId(topicId);
-    const response = await fetch(`${API_BASE_URL}/topic/${apiTopic}`);
+    const response = await fetch(`${API_BASE_URL}/topic/${topicId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch');
     }
     return response.json();
   }
 
-  // Получить задачи по теме и сложности (с маппингом ID)
   static async getChallengesByTopicAndDifficulty(
     topicId: string,
     difficulty: string,
   ): Promise<Challenge[]> {
-    const apiTopic = getApiTopicId(topicId);
     const response = await fetch(
-      `${API_BASE_URL}/topic/${apiTopic}/difficulty/${difficulty}`,
+      `${API_BASE_URL}/topic/${topicId}/difficulty/${difficulty}`,
     );
     if (!response.ok) {
       throw new Error('Failed to fetch');
