@@ -4,6 +4,7 @@
   --color-secondary: #ffc107;
   --color-success: #4ca330;
   --color-error: #ff7f2a;
+  --color-error-red: #fd1c1c;
   --color-neutral: #2c3e30;
   --color-bg-light: #f8fafb;
   --color-bg-dark: #152935;
@@ -16,11 +17,18 @@
   --color-btn-orange-dark: #ff5e02;
   --color-btn-yellow-light: #ffe865;
   --color-btn-yellow-dark: #ffae00;
+  --color-btn-green-dark: #03a12b;
+  --color-btn-green-light: #66b966;
+  --color-btn-blue-dark: #2522d4;
+  --color-btn-blue-light: #6285cf;
   --color-btn-glare: rgba(255, 255, 255, 0.8);
   --color-dark-shadow: rgba(0, 0, 0, 0.5);
   --color-alpha: rgba(0, 0, 0, 0);
   --color-text-white: white;
   --color-text-white-alpha: rgba(255, 255, 255, 0.521);
+  --color-gray-border: rgba(255, 255, 255, 0.1);
+  --color-black-alpha-background: rgba(0, 0, 0, 0.2);
+  --color-white-alpha-background: rgba(255, 255, 255, 0.05);
 
   /* Шрифты */
   --font-regular: 16px 'Poppins', sans-serif;
