@@ -76,13 +76,35 @@
 }
 
 .button-grey {
-  width: 155px;
+  min-width: 155px;
   background-color: #6c757d;
   color: var(--color-text-light);
 }
 
 .button-grey:hover {
   background-color: #464c52;
+}
+
+.button-green {
+  min-width: 155px;
+  background-color: var(--color-btn-green-dark);
+  color: var(--color-text-white);
+  font-weight: bold;
+}
+
+.button-green:hover {
+  background-color: var(--color-btn-green-light);
+}
+
+.button-blue {
+  min-width: 155px;
+  background-color: var(--color-btn-blue-dark);
+  color: var(--color-text-white);
+  font-weight: bold;
+}
+
+.button-blue:hover {
+  background-color: var(--color-btn-blue-light);
 }
 
 .button:disabled {
