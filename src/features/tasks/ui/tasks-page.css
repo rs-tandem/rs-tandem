@@ -24,6 +24,7 @@
 }
 
 .tasks-page__panel {
+  /* align-items: center; */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -35,6 +36,7 @@
 }
 
 .tasks-page__task-info {
+  height: 100%;
   color: white;
   display: flex;
   flex-direction: column;
@@ -87,13 +89,17 @@
   color: var(--color-success);
 }
 
+.tasks-page__example * {
+  overflow-wrap: break-word;
+}
+
 .tasks-page__editor {
   background: var(--color-bg-dark);
   border-radius: 12px;
   border: 1px solid var(--color-gray-border);
   overflow: hidden;
   width: 100%;
-  height: 50%;
+  height: 100%;
   min-height: 200px;
   padding: 16px;
   font-size: 14px;
@@ -109,12 +115,25 @@
 }
 
 .tasks-page__results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  flex: 1;
+  width: 100%;
   background: var(--color-black-alpha-background);
   border-radius: 12px;
   padding: 16px;
   min-height: 100px;
   max-height: 100%;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+}
+
+.tasks-page__editor-div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 50%;
 }
 
 .tasks-page__results-summary {
@@ -127,6 +146,7 @@
 }
 
 .tasks-page__tests-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -155,6 +175,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow-wrap: break-word;
 }
 
 .tasks-page__test-error {
@@ -168,5 +189,58 @@
 
   .tasks-page__header {
     flex-wrap: wrap;
+  }
+}
+
+.tasks-page__error {
+  padding: 20px;
+  text-align: center;
+  color: var(--color-error-red);
+  border: 1px solid var(--color-error-red);
+  border-radius: 8px;
+  margin: 10px;
+  font-size: 18px;
+}
+
+.tasks-page__menu button {
+  max-width: 400px;
+  width: 100%;
+}
+
+.tasks-page__menu {
+  min-width: 50%;
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-black-alpha-background);
+  padding: 5px;
+}
+
+.tasks-page__challenges-container {
+  margin-left: 16px;
+  margin-top: 8px;
+  display: none;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.menu-item {
+  padding: 6px 12px;
+  margin: 4px 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.menu-item {
+  color: white;
+}
+
+.menu-item:hover {
+  color: black;
+  background: white;
+}
+
+@media (max-width: 768px) {
+  .tasks-page__buttons {
+    flex-direction: column;
   }
 }

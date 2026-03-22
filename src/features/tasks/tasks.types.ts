@@ -14,6 +14,7 @@ export interface Challenge {
   tests: TestCase[];
   solution: string;
   solutionExplanation: string;
+  testRunner?: string;
 }
 
 export interface CheckResult {

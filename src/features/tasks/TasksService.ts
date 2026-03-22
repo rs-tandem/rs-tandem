@@ -84,16 +84,69 @@ export class ChallengeService {
     return response.json();
   }
 
-  static runCode(code: string, tests: TestCase[]): CheckResult {
-    const results: CheckResult['results'] = [];
+  static async getChallengesGrouped() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/menuChallenges`);
+      const data = await response.json();
+      return data;
+    } catch {
+      return {};
+    }
+  }
 
+  static runBasicJsCode(code: string, tests: TestCase[]): CheckResult {
+    const results: CheckResult['results'] = [];
     try {
       // eslint-disable-next-line @typescript-eslint/no-implied-eval
       const userFunction = new Function(`return ${code}`)();
-
       tests.forEach((test) => {
         try {
           const actual = userFunction(...test.input);
+          const passed = isEqual(actual, test.output);
+          results.push({
+            input: test.input,
+            expected: test.output,
+            actual,
+            passed,
+          });
+        } catch (error) {
+          results.push({
+            input: test.input,
+            expected: test.output,
+            actual: undefined,
+            passed: false,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
+      });
+
+      const allPassed = results.every((r) => r.passed);
+      return {
+        allPassed,
+        results,
+        message: allPassed ? 'Тесты пройдены' : 'Тесты не пройдены',
+      };
+    } catch (error) {
+      return {
+        allPassed: false,
+        results: [],
+        message: error instanceof Error ? error.message : String(error),
+      };
+    }
+  }
+
+  static runClosureCode(code: string, tests: TestCase[]): CheckResult {
+    const results: CheckResult['results'] = [];
+    try {
+      tests.forEach((test) => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-implied-eval
+          const testFunction = new Function(`
+            ${code}
+            return ${test.input};
+          `);
+
+          const actual = testFunction();
           const passed = isEqual(actual, test.output);
           results.push({
             input: test.input,

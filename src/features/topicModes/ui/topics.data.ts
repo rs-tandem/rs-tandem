@@ -27,6 +27,7 @@ export const TOPICS: Topic[] = [
   },
 ];
 
+// #FIXME убрать, нигде не используется
 export function getTopicTitleById(topicId: string): string {
   const topic = TOPICS.find((item) => item.id === topicId);
   return topic?.title ?? 'Тема';
