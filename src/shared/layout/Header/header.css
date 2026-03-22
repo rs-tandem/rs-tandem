@@ -9,6 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
 .header-title {
@@ -65,4 +66,11 @@
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+@media (max-width: 700px) {
+  .header-right {
+    align-items: start;
+    flex-direction: column;
+  }
 }

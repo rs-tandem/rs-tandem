@@ -27,4 +27,9 @@ export class DOMHelper {
       element.firstChild.remove();
     }
   }
+
+  static showSpinner(element: HTMLElement, spinner: HTMLElement): void {
+    DOMHelper.clearChildren(element);
+    element.appendChild(spinner);
+  }
 }

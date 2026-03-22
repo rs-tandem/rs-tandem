@@ -6,6 +6,7 @@ const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   loading: false,
+  pageLoading: false,
   error: null,
 };
 
@@ -34,11 +35,21 @@ const authSlice = createSlice({
       user: null,
       isAuthenticated: false,
       loading: false,
+      pageLoading: false,
       error: null,
+    }),
+    setPageLoading: (state, action) => ({
+      ...state,
+      pageLoading: action.payload,
     }),
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout } =
-  authSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  setPageLoading,
+} = authSlice.actions;
 export default authSlice.reducer;
