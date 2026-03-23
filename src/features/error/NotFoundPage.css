@@ -21,27 +21,23 @@
   justify-self: center;
   text-align: center;
 }
-.right-img {
+.not-found__right-img {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow: visible;
   min-height: 700px;
 }
 
 .not-found__image {
-  width: 130%;
+  width: 115%;
+  max-width: 560px;
   height: auto;
   object-fit: contain;
   object-position: center;
-  transform: translateX(-8%);
+  transform: translateX(-4%);
 }
-.not-found__actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+
 .not-found__title {
   margin-bottom: 12px;
   font-size: 26px;
@@ -64,7 +60,7 @@
     order: 1;
   }
 
-  .right-img {
+  .not-found__right-img {
     order: 2;
     min-height: auto;
   }
