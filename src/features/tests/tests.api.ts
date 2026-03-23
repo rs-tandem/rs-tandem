@@ -6,8 +6,13 @@ import type {
 
 const API_URL = 'http://5.129.197.181';
 
-export async function getRandomQuestion(): Promise<Question> {
-  const response = await fetch(`${API_URL}/api/questions/random`);
+export async function getRandomQuestionByTopic(
+  topicId: string,
+): Promise<Question> {
+  const response = await fetch(
+    `${API_URL}/api/questions/topic/${topicId}/random`,
+  );
+
   if (!response.ok) {
     throw new Error(`Failed to load question: ${response.status}`);
   }

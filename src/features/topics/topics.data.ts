@@ -4,10 +4,10 @@ export interface TopicItem {
 }
 
 export const TOPIC_ITEMS: TopicItem[] = [
-  { id: 'core-js', title: 'Основы JavaScript' },
-  { id: 'closures', title: 'Замыкания' },
-  { id: 'asynchrony', title: 'Асинхронность' },
-  { id: 'data-structures', title: 'Структуры данных' },
+  { id: 'basics', title: 'Основы JavaScript' },
+  { id: 'closure', title: 'Замыкания' },
+  { id: 'async', title: 'Асинхронность' },
+  { id: 'structures', title: 'Структуры данных' },
 ];
 
 export function getTopicTitleById(topicId: string): string {

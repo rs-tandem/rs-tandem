@@ -1,7 +1,7 @@
 import { TestsPage } from '../../features/tests/TestPage';
 import { Layout } from '../../shared/layout/layout';
 
-import { protectedPage } from './route-helpers';
+import { getTopicId, protectedPage } from './route-helpers';
 
 export function testsRoutes(layout: Layout) {
   return [
@@ -10,7 +10,7 @@ export function testsRoutes(layout: Layout) {
       element: () =>
         protectedPage(() => {
           layout.getHeader().setTitle('Тесты');
-          return new TestsPage().getElement();
+          return new TestsPage(getTopicId()).getElement();
         }),
     },
   ];

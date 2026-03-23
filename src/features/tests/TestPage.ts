@@ -1,6 +1,6 @@
 import { DOMHelper } from '../../shared/utils/createElement';
 
-import { getRandomQuestion, checkAnswer } from './tests.api';
+import { getRandomQuestionByTopic, checkAnswer } from './tests.api';
 import type { Question } from './tests.types';
 import './tests-page.css';
 
@@ -19,7 +19,7 @@ export class TestsPage {
 
   private isAnswered = false;
 
-  constructor() {
+  constructor(private readonly topicId: string) {
     this.element = DOMHelper.createElement('section', 'tests-page');
     this.questionElement = DOMHelper.createElement(
       'div',
@@ -62,7 +62,7 @@ export class TestsPage {
   private async loadQuestion(): Promise<void> {
     this.resetState();
     try {
-      const question = await getRandomQuestion();
+      const question = await getRandomQuestionByTopic(this.topicId);
       this.currentQuestion = question;
       this.questionElement.textContent = question.question;
       this.renderOptions(question.options);
