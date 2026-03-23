@@ -26,8 +26,3 @@ export const TOPICS: Topic[] = [
     imageUrl: treeIcon,
   },
 ];
-
-export function getTopicTitleById(topicId: string): string {
-  const topic = TOPICS.find((item) => item.id === topicId);
-  return topic?.title ?? 'Тема';
-}

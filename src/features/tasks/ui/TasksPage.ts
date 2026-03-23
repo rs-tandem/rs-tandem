@@ -1,6 +1,7 @@
 import { Router } from 'vanilla-routing';
 
 import { Button } from '../../../shared/components';
+import { Spinner } from '../../../shared/components/Spinner/Spinner';
 import { DOMHelper } from '../../../shared/utils/createElement';
 import type { Challenge, CheckResult } from '../tasks.types';
 import { ChallengeService } from '../TasksService';
@@ -8,11 +9,18 @@ import { ChallengeService } from '../TasksService';
 import './tasks-page.css';
 
 const ZERO = 0;
+const BASE_TIME_SPINNER = 500;
 
 export class TasksPage {
   private readonly element: HTMLElement;
 
+  private spinner: Spinner | null = null;
+
   private currentChallenge: Challenge | null = null;
+
+  private taskInfo: HTMLElement | null = null;
+
+  private editorDiv: HTMLElement | null = null;
 
   private codeEditor: HTMLTextAreaElement | null = null;
 
@@ -24,11 +32,18 @@ export class TasksPage {
 
   private solution: { solution: string; explanation: string } | null = null;
 
-  private isLoading = false;
+  private challengesMenu: HTMLElement | null = null;
+
+  private groupedChallenges: Record<
+    string,
+    { id: number; title: string; difficulty: string }[]
+  > = {};
 
   constructor(private readonly topicId: string) {
+    this.spinner = new Spinner();
     this.element = DOMHelper.createElement('section', 'tasks-page');
     this.render();
+    this.loadChallengesMenu();
     this.loadRandomChallengeByTopic();
   }
 
@@ -53,18 +68,82 @@ export class TasksPage {
     this.element.append(header, content);
   }
 
+  private async loadChallengesMenu(): Promise<void> {
+    this.groupedChallenges = await ChallengeService.getChallengesGrouped();
+    this.renderChallengesMenu();
+  }
+
   private createLeftPanel(): HTMLElement {
     const panel = DOMHelper.createElement('div', 'tasks-page__panel');
+
+    this.challengesMenu = DOMHelper.createElement('div', 'tasks-page__menu');
+    panel.append(this.challengesMenu);
 
     if (this.currentChallenge) {
       const taskInfo = this.createTaskInfo();
       panel.append(taskInfo);
     }
+
     return panel;
   }
 
+  private renderChallengesMenu(): void {
+    if (!this.challengesMenu) return;
+
+    DOMHelper.clearChildren(this.challengesMenu);
+
+    const challengesContainer = DOMHelper.createElement(
+      'div',
+      'tasks-page__challenges-container',
+    );
+    challengesContainer.style.display = 'none';
+
+    this.groupedChallenges[this.topicId]!.forEach((challenge) => {
+      const challengeItem = DOMHelper.createElement(
+        'div',
+        'menu-item',
+        challenge.title,
+      );
+
+      challengeItem.addEventListener('click', async () => {
+        this.currentChallenge = await ChallengeService.getChallengeById(
+          challenge.id,
+        );
+        if (this.taskInfo && this.spinner) {
+          DOMHelper.showSpinner(
+            this.taskInfo,
+            this.spinner.getElement().cloneNode(true) as HTMLElement,
+          );
+        }
+        if (this.editorDiv && this.spinner) {
+          DOMHelper.showSpinner(
+            this.editorDiv,
+            this.spinner.getElement().cloneNode(true) as HTMLElement,
+          );
+        }
+        setTimeout(async () => {
+          this.updateTaskDisplay(this.leftPanel!);
+        }, BASE_TIME_SPINNER);
+      });
+      challengesContainer.append(challengeItem);
+      challengesContainer.classList.add('custom-scroll');
+    });
+
+    const topicTitleBtn = new Button('Список задач по теме ▼', 'grey', () => {
+      if (challengesContainer.style.display !== 'block') {
+        challengesContainer.style.display = 'block';
+        topicTitleBtn.setText('Список задач по теме ▲');
+      } else {
+        challengesContainer.style.display = 'none';
+        topicTitleBtn.setText('Список задач по теме ▼');
+      }
+    });
+
+    this.challengesMenu.append(topicTitleBtn.getElement(), challengesContainer);
+  }
+
   private createTaskInfo(): HTMLElement {
-    const taskInfo = DOMHelper.createElement('div', 'tasks-page__task-info');
+    this.taskInfo = DOMHelper.createElement('div', 'tasks-page__task-info');
 
     const difficultyBadge = DOMHelper.createElement(
       'div',
@@ -84,14 +163,14 @@ export class TasksPage {
     );
     const examplesSection = this.createExamplesSection();
 
-    taskInfo.append(
+    this.taskInfo.append(
       difficultyBadge,
       taskTitle,
       taskDescription,
       examplesSection,
     );
 
-    return taskInfo;
+    return this.taskInfo;
   }
 
   private createExamplesSection(): HTMLElement {
@@ -128,7 +207,12 @@ export class TasksPage {
   }
 
   private createRightPanel(): HTMLElement {
-    const panel = DOMHelper.createElement('div', 'tasks-page__panel');
+    const panel = DOMHelper.createElement(
+      'div',
+      'tasks-page__panel custom-scroll',
+    );
+
+    this.editorDiv = DOMHelper.createElement('div', 'tasks-page__editor-div');
 
     this.codeEditor = DOMHelper.createElement('textarea', 'tasks-page__editor');
     this.codeEditor.spellcheck = false;
@@ -136,6 +220,7 @@ export class TasksPage {
     if (this.currentChallenge) {
       this.codeEditor.value = `function ${this.currentChallenge.functionName}() {\n  \n}`;
     }
+    this.editorDiv.append(this.codeEditor);
     const buttonsContainer = DOMHelper.createElement(
       'div',
       'tasks-page__buttons',
@@ -158,34 +243,49 @@ export class TasksPage {
       'tasks-page__results',
     );
 
-    panel.append(this.codeEditor, buttonsContainer, this.resultsContainer);
+    panel.append(this.editorDiv, buttonsContainer, this.resultsContainer);
 
     return panel;
   }
 
   private async loadRandomChallengeByTopic(): Promise<void> {
-    if (this.isLoading) return;
-    this.isLoading = true;
-
-    try {
-      this.currentChallenge = await ChallengeService.getRandomChallengeByTopic(
-        this.topicId,
+    if (this.leftPanel && this.spinner) {
+      DOMHelper.showSpinner(
+        this.leftPanel,
+        this.spinner.getElement().cloneNode(true) as HTMLElement,
       );
-      this.updateTaskDisplay();
-    } catch {
-      /* empty */
-    } finally {
-      this.isLoading = false;
     }
+    if (this.editorDiv && this.spinner) {
+      DOMHelper.showSpinner(
+        this.editorDiv,
+        this.spinner.getElement().cloneNode(true) as HTMLElement,
+      );
+    }
+    setTimeout(async () => {
+      try {
+        this.currentChallenge =
+          await ChallengeService.getRandomChallengeByTopic(this.topicId);
+        this.updateTaskDisplay(this.leftPanel!);
+      } catch {
+        TasksPage.showError('Не удалось загрузить задачу.', this.leftPanel!);
+        TasksPage.showError('Не удалось загрузить задачу.', this.editorDiv!);
+      }
+    }, BASE_TIME_SPINNER);
   }
 
-  private updateTaskDisplay(): void {
-    if (!this.currentChallenge || !this.leftPanel || !this.rightPanel) return;
+  private updateTaskDisplay(leftPanel: HTMLElement): void {
+    if (!this.currentChallenge || !leftPanel) return;
+    DOMHelper.clearChildren(leftPanel);
+    DOMHelper.clearChildren(this.editorDiv!);
 
-    DOMHelper.clearChildren(this.leftPanel);
+    if (this.challengesMenu) {
+      leftPanel.append(this.challengesMenu);
+    }
+
     const taskInfo = this.createTaskInfo();
-    this.leftPanel.append(taskInfo);
+    leftPanel.append(taskInfo);
 
+    this.editorDiv?.append(this.codeEditor!);
     if (this.codeEditor) {
       this.codeEditor.value = `function ${this.currentChallenge.functionName}() {\n  \n}`;
     }
@@ -197,22 +297,46 @@ export class TasksPage {
   }
 
   private async runTests(): Promise<void> {
-    if (!this.currentChallenge || !this.codeEditor || !this.resultsContainer)
-      return;
-
-    this.currentChallenge.tests = (
-      await ChallengeService.getTestsForChallenge(this.currentChallenge.id)
-    ).tests;
-    const code = this.codeEditor.value.trim();
-
-    const result = ChallengeService.runCode(code, this.currentChallenge.tests);
-
+    if (this.resultsContainer && this.spinner) {
+      DOMHelper.showSpinner(this.resultsContainer, this.spinner.getElement());
+    }
+    setTimeout(async () => {
+      if (!this.currentChallenge || !this.codeEditor || !this.resultsContainer)
+        return;
+      this.currentChallenge.tests = (
+        await ChallengeService.getTestsForChallenge(this.currentChallenge.id)
+      ).tests;
+      const code = this.codeEditor.value.trim();
+      let result;
+      if (this.currentChallenge.category === 'core-js') {
+        result = ChallengeService.runBasicJsCode(
+          code,
+          this.currentChallenge.tests,
+        );
+        this.showResults(result);
+      }
+      if (this.currentChallenge.category === 'closures') {
+        result = ChallengeService.runClosureCode(
+          code,
+          this.currentChallenge.tests,
+        );
+        this.showResults(result);
+      }
+    }, BASE_TIME_SPINNER);
     // const resultTests = await ChallengeService.checkSolution(
     //   this.currentChallenge.id,
     //   this.codeEditor.value,
     // );
+  }
 
-    this.showResults(result);
+  private static showError(message: string, div: HTMLElement): void {
+    DOMHelper.clearChildren(div);
+    const errorDiv = DOMHelper.createElement(
+      'div',
+      'tasks-page__error',
+      message,
+    );
+    div.append(errorDiv);
   }
 
   private showResults(result: CheckResult): void {
