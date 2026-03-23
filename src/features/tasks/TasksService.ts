@@ -84,7 +84,9 @@ export class ChallengeService {
     return response.json();
   }
 
-  static async getChallengesGrouped() {
+  static async getChallengesGrouped(): Promise<
+    Record<string, { id: number; title: string; difficulty: string }[]>
+  > {
     try {
       const response = await fetch(`${API_BASE_URL}/menuChallenges`);
       const data = await response.json();
