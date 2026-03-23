@@ -16,3 +16,7 @@ Interview Prep - это помощник в подготовке к технич
 
 [First](https://github.com/rs-tandem/rs-tandem/blob/main/meeting-notes/Meeting-Notes-02-14.md)
 [Second](https://github.com/rs-tandem/rs-tandem/blob/main/meeting-notes/Meeting-Notes-03-02.md)
+
+## Видео для Week 5 Checkpoint
+
+[Week-5-Checkpoint](https://drive.google.com/file/d/1nGJthx2yY11uIZzwxrPgs23ofnwyweQq/view?usp=sharing)
