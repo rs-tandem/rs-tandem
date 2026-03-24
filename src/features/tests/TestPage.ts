@@ -1,8 +1,12 @@
+import errorSound from '../../assets/sounds/error.wav';
+import successSound from '../../assets/sounds/success.mp3';
 import { DOMHelper } from '../../shared/utils/createElement';
 
 import { getRandomQuestionByTopic, checkAnswer } from './tests.api';
 import type { Question } from './tests.types';
 import './tests-page.css';
+
+const SOUND_VOLUME = 0.4;
 
 export class TestsPage {
   private readonly element: HTMLElement;
@@ -14,6 +18,10 @@ export class TestsPage {
   private readonly explanationElement: HTMLElement;
 
   private readonly nextButton: HTMLButtonElement;
+
+  private readonly successSound: HTMLAudioElement;
+
+  private readonly errorSound: HTMLAudioElement;
 
   private currentQuestion: Question | null = null;
 
@@ -35,8 +43,14 @@ export class TestsPage {
       'tests-page__next-button',
       'Следующий вопрос',
     );
+    this.successSound = new Audio(successSound);
+    this.errorSound = new Audio(errorSound);
+    this.successSound.volume = SOUND_VOLUME;
+    this.errorSound.volume = SOUND_VOLUME;
+
     this.render();
     this.addEventListeners();
+    this.preloadSounds();
     this.loadQuestion();
   }
 
@@ -57,6 +71,11 @@ export class TestsPage {
     this.nextButton.addEventListener('click', () => {
       this.loadQuestion();
     });
+  }
+
+  private preloadSounds(): void {
+    this.successSound.load();
+    this.errorSound.load();
   }
 
   private async loadQuestion(): Promise<void> {
@@ -115,7 +134,7 @@ export class TestsPage {
           ? 'tests-page__option--correct'
           : 'tests-page__option--incorrect',
       );
-
+      this.playAnswerSound(result.correct);
       this.showExplanation(result.explanation, false);
     } catch (error) {
       this.showExplanation(
@@ -127,14 +146,20 @@ export class TestsPage {
     }
   }
 
-  private toggleOptions(_disabled: boolean): void {
+  private playAnswerSound(isCorrect: boolean): void {
+    const sound = isCorrect ? this.successSound : this.errorSound;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
+
+  private toggleOptions(disabled: boolean): void {
     const buttons = this.optionsElement.querySelectorAll<HTMLButtonElement>(
       '.tests-page__option',
     );
 
     buttons.forEach((button) => {
       const optionButton = button;
-      optionButton.disabled = true;
+      optionButton.disabled = disabled;
     });
   }
 
