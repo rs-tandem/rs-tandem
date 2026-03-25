@@ -33,7 +33,7 @@ export class Header {
     this.right.replaceChildren();
 
     const settingsButton = new Button('Настройки', 'grey', () => {
-      // TBD
+      Router.go('/settings');
     });
 
     this.right.append(settingsButton.getElement());
