@@ -7,6 +7,7 @@ import type { Question } from './tests.types';
 import './tests-page.css';
 
 const SOUND_VOLUME = 0.4;
+const SOUND_STORAGE_KEY = 'sound-enabled';
 
 export class TestsPage {
   private readonly element: HTMLElement;
@@ -147,6 +148,12 @@ export class TestsPage {
   }
 
   private playAnswerSound(isCorrect: boolean): void {
+    const isSoundEnabled = localStorage.getItem(SOUND_STORAGE_KEY) !== 'off';
+
+    if (!isSoundEnabled) {
+      return;
+    }
+
     const sound = isCorrect ? this.successSound : this.errorSound;
     sound.currentTime = 0;
     sound.play().catch(() => {});
