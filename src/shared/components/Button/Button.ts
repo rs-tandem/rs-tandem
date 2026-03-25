@@ -11,7 +11,7 @@ export class Button {
   constructor(
     text: string,
     typeButton: ButtonType = 'grey',
-    onClick?: () => void,
+    onClick?: (event: Event) => void,
   ) {
     this.element = DOMHelper.createElement(
       'button',

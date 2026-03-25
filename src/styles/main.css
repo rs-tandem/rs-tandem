@@ -1,4 +1,6 @@
 @import './variables.css';
+@import '../shared/components/Scroll/Scroll.css';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,6 +9,9 @@
 
 html,
 body {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-bg-dark) var(--color-text-light);
   height: 100%;
   width: 100%;
   font-family: 'Poppins', sans-serif;
@@ -27,6 +32,7 @@ body {
 }
 
 .main-content {
+  display: flex;
   flex: 1;
   overflow-y: auto;
 }

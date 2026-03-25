@@ -83,7 +83,7 @@
 
 .topic-mode-page__modes {
   display: grid;
-  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  grid-template-columns: repeat(3, minmax(210px, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 760px;
