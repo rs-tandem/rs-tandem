@@ -8,6 +8,8 @@ import './tests-page.css';
 
 const SOUND_VOLUME = 0.4;
 const SOUND_STORAGE_KEY = 'sound-enabled';
+const TOTAL_QUESTIONS = 10;
+const INITIAL_ATTEMPTS = 0;
 
 export class TestsPage {
   private readonly element: HTMLElement;
@@ -24,12 +26,22 @@ export class TestsPage {
 
   private readonly errorSound: HTMLAudioElement;
 
+  private readonly progressElement: HTMLElement;
+
+  private questionIndex = INITIAL_ATTEMPTS;
+
+  private readonly totalQuestions = TOTAL_QUESTIONS;
+
   private currentQuestion: Question | null = null;
 
   private isAnswered = false;
 
   constructor(private readonly topicId: string) {
     this.element = DOMHelper.createElement('section', 'tests-page');
+    this.progressElement = DOMHelper.createElement(
+      'div',
+      'tests-page__progress',
+    );
     this.questionElement = DOMHelper.createElement(
       'div',
       'tests-page__question',
@@ -59,7 +71,9 @@ export class TestsPage {
     const card = DOMHelper.createElement('div', 'tests-page__card');
 
     this.explanationElement.hidden = true;
+    this.nextButton.disabled = true;
     card.append(
+      this.progressElement,
       this.questionElement,
       this.optionsElement,
       this.explanationElement,
@@ -80,6 +94,13 @@ export class TestsPage {
   }
 
   private async loadQuestion(): Promise<void> {
+    if (this.questionIndex >= this.totalQuestions) {
+      this.showFinish();
+      return;
+    }
+    this.questionIndex += 1;
+
+    this.progressElement.textContent = `Вопрос ${this.questionIndex} из ${this.totalQuestions}`;
     this.resetState();
     try {
       const question = await getRandomQuestionByTopic(this.topicId);
@@ -135,6 +156,7 @@ export class TestsPage {
           ? 'tests-page__option--correct'
           : 'tests-page__option--incorrect',
       );
+      this.nextButton.disabled = false;
       this.playAnswerSound(result.correct);
       this.showExplanation(result.explanation, false);
     } catch (error) {
@@ -179,9 +201,34 @@ export class TestsPage {
     );
   }
 
+  private showFinish(): void {
+    this.element.innerHTML = '';
+
+    const container = DOMHelper.createElement('div', 'tests-page__finish');
+
+    const title = DOMHelper.createElement('h2', '', 'Тест завершён 🎉');
+
+    const button = DOMHelper.createElement(
+      'button',
+      'tests-page__next-button',
+      'Пройти заново',
+    );
+
+    button.addEventListener('click', () => {
+      this.questionIndex = 0;
+      this.element.innerHTML = '';
+      this.render();
+      this.loadQuestion();
+    });
+
+    container.append(title, button);
+    this.element.append(container);
+  }
+
   private resetState(): void {
     this.currentQuestion = null;
     this.isAnswered = false;
+    this.nextButton.disabled = true;
     this.optionsElement.innerHTML = '';
     this.explanationElement.hidden = true;
     this.explanationElement.textContent = '';
