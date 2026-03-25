@@ -24,7 +24,8 @@ export class SettingsPage {
       'Звук',
     );
 
-    const isSoundEnabled = localStorage.getItem(SOUND_STORAGE_KEY) !== 'off';
+    const stored = localStorage.getItem(SOUND_STORAGE_KEY);
+    const isSoundEnabled = stored === null || stored !== 'off';
 
     const soundToggle = DOMHelper.createElement(
       'button',
@@ -42,10 +43,7 @@ export class SettingsPage {
 
       soundToggle.textContent = nextValue ? 'ON' : 'OFF';
       soundToggle.setAttribute('aria-pressed', String(nextValue));
-      soundToggle.classList.toggle(
-        'settings-page__toggle--active',
-        isSoundEnabled,
-      );
+      soundToggle.classList.toggle('settings-page__toggle--active', nextValue);
     });
     const mascot = DOMHelper.createElement('img', 'settings-page__image');
     mascot.src = new URL(
