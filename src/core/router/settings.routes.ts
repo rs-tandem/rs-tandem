@@ -7,12 +7,11 @@ export function settingsRoutes(layout: Layout) {
   return [
     {
       pathname: '/settings',
-      element: () => {
+      element: () =>
         protectedPage(() => {
           layout.getHeader().setTitle('Настройки');
           return new SettingsPage().getElement();
-        });
-      },
+        }),
     },
   ];
 }

@@ -42,7 +42,10 @@ export class SettingsPage {
 
       soundToggle.textContent = nextValue ? 'ON' : 'OFF';
       soundToggle.setAttribute('aria-pressed', String(nextValue));
-      soundToggle.classList.toggle('settings-page__toggle--active', nextValue);
+      soundToggle.classList.toggle(
+        'settings-page__toggle--active',
+        isSoundEnabled,
+      );
     });
     const mascot = DOMHelper.createElement('img', 'settings-page__image');
     mascot.src = new URL(
