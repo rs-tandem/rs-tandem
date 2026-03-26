@@ -1,5 +1,8 @@
+import { Router } from 'vanilla-routing';
+
 import errorSound from '../../assets/sounds/error.wav';
 import successSound from '../../assets/sounds/success.mp3';
+import { Button } from '../../shared/components';
 import { DOMHelper } from '../../shared/utils/createElement';
 
 import { getRandomQuestionByTopic, checkAnswer } from './tests.api';
@@ -10,6 +13,26 @@ const SOUND_VOLUME = 0.4;
 const SOUND_STORAGE_KEY = 'sound-enabled';
 const TOTAL_QUESTIONS = 10;
 const INITIAL_ATTEMPTS = 0;
+const EXCELLENT_SCORE = 90;
+const GOOD_SCORE = 70;
+const OK_SCORE = 40;
+const PERCENT_MULTIPLIER = 100;
+
+function getFinishTitle(scorePercent: number): string {
+  if (scorePercent >= EXCELLENT_SCORE) {
+    return 'Отличный результат 🎉';
+  }
+
+  if (scorePercent >= GOOD_SCORE) {
+    return 'Хорошая работа 👏';
+  }
+
+  if (scorePercent >= OK_SCORE) {
+    return 'Неплохо, но можно лучше 💪';
+  }
+
+  return 'Попробуй ещё раз';
+}
 
 export class TestsPage {
   private readonly element: HTMLElement;
@@ -29,6 +52,8 @@ export class TestsPage {
   private readonly progressElement: HTMLElement;
 
   private questionIndex = INITIAL_ATTEMPTS;
+
+  private correctAnswersCount = INITIAL_ATTEMPTS;
 
   private readonly totalQuestions = TOTAL_QUESTIONS;
 
@@ -103,6 +128,7 @@ export class TestsPage {
     this.progressElement.textContent = `Вопрос ${this.questionIndex} из ${this.totalQuestions}`;
     this.resetState();
     try {
+      this.questionElement.textContent = 'Загрузка...';
       const question = await getRandomQuestionByTopic(this.topicId);
       this.currentQuestion = question;
       this.questionElement.textContent = question.question;
@@ -150,6 +176,10 @@ export class TestsPage {
         questionId: this.currentQuestion.id,
         answerIndex,
       });
+
+      if (result.correct) {
+        this.correctAnswersCount += 1;
+      }
 
       selectedButton.classList.add(
         result.correct
@@ -202,26 +232,57 @@ export class TestsPage {
   }
 
   private showFinish(): void {
-    this.element.innerHTML = '';
+    this.element.replaceChildren();
 
     const container = DOMHelper.createElement('div', 'tests-page__finish');
 
-    const title = DOMHelper.createElement('h2', '', 'Тест завершён 🎉');
+    const card = DOMHelper.createElement('div', 'tests-page__finish-card');
 
-    const button = DOMHelper.createElement(
-      'button',
-      'tests-page__next-button',
-      'Пройти заново',
+    const scorePercent = Math.round(
+      (this.correctAnswersCount / this.totalQuestions) * PERCENT_MULTIPLIER,
     );
 
-    button.addEventListener('click', () => {
-      this.questionIndex = 0;
-      this.element.innerHTML = '';
+    const title = DOMHelper.createElement(
+      'h2',
+      'tests-page__finish-title',
+      getFinishTitle(scorePercent),
+    );
+
+    const score = DOMHelper.createElement(
+      'div',
+      'tests-page__finish-score',
+      `${this.correctAnswersCount} / ${this.totalQuestions}`,
+    );
+
+    const percent = DOMHelper.createElement(
+      'p',
+      'tests-page__finish-percent',
+      `${scorePercent}% правильных ответов`,
+    );
+
+    const actions = DOMHelper.createElement(
+      'div',
+      'tests-page__finish-actions',
+    );
+
+    const restartButton = new Button('Пройти заново', 'orange', () => {
+      this.questionIndex = INITIAL_ATTEMPTS;
+      this.correctAnswersCount = INITIAL_ATTEMPTS;
+      this.element.replaceChildren();
       this.render();
       this.loadQuestion();
     });
-
-    container.append(title, button);
+    const backButton = new Button('К темам', 'grey', () => {
+      Router.go('/');
+    });
+    const mascot = DOMHelper.createElement('img', 'tests-page__finish-image');
+    mascot.src = new URL(
+      '../../assets/img/excellent.png',
+      import.meta.url,
+    ).toString();
+    actions.append(restartButton.getElement(), backButton.getElement());
+    card.append(title, score, percent, actions);
+    container.append(card, mascot);
     this.element.append(container);
   }
 
@@ -231,6 +292,7 @@ export class TestsPage {
     this.nextButton.disabled = true;
     this.optionsElement.innerHTML = '';
     this.explanationElement.hidden = true;
+
     this.explanationElement.textContent = '';
     this.explanationElement.classList.remove('tests-page__explanation--error');
   }
