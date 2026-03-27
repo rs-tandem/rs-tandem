@@ -239,7 +239,12 @@ export class TestsPage {
 
     const sound = isCorrect ? this.successSound : this.errorSound;
     sound.currentTime = 0;
-    sound.play().catch(() => {});
+    sound.play().catch((error) => {
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    });
   }
 
   private toggleOptions(disabled: boolean): void {
