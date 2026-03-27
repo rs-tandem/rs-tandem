@@ -1,4 +1,4 @@
-import { TestsPage } from '../../features/tests/TestPage';
+import { TestsPage } from '../../features/tests/TestsPage';
 import { Layout } from '../../shared/layout/layout';
 
 import { getTopicId, protectedPage } from './route-helpers';

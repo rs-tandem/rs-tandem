@@ -5,6 +5,7 @@ import successSound from '../../assets/sounds/success.mp3';
 import { Button } from '../../shared/components';
 import { DOMHelper } from '../../shared/utils/createElement';
 
+import { saveTestResult } from './results.storage';
 import { getRandomQuestionByTopic, checkAnswer } from './tests.api';
 import type { Question } from './tests.types';
 import './tests-page.css';
@@ -34,6 +35,19 @@ function getFinishTitle(scorePercent: number): string {
   return 'Попробуй ещё раз';
 }
 
+function createFinishMascot(): HTMLImageElement {
+  const mascot = DOMHelper.createElement('img', 'tests-page__finish-image');
+
+  mascot.src = new URL(
+    '../../assets/img/excellent.png',
+    import.meta.url,
+  ).toString();
+
+  mascot.alt = 'Mascot';
+
+  return mascot;
+}
+
 export class TestsPage {
   private readonly element: HTMLElement;
 
@@ -60,6 +74,8 @@ export class TestsPage {
   private currentQuestion: Question | null = null;
 
   private isAnswered = false;
+
+  private isResultSaved = false;
 
   constructor(private readonly topicId: string) {
     this.element = DOMHelper.createElement('section', 'tests-page');
@@ -180,6 +196,21 @@ export class TestsPage {
       if (result.correct) {
         this.correctAnswersCount += 1;
       }
+      if (!this.isResultSaved && this.questionIndex === this.totalQuestions) {
+        const scorePercent = Math.round(
+          (this.correctAnswersCount / this.totalQuestions) * PERCENT_MULTIPLIER,
+        );
+
+        saveTestResult({
+          topicId: this.topicId,
+          correctAnswers: this.correctAnswersCount,
+          totalQuestions: this.totalQuestions,
+          scorePercent,
+          completedAt: new Date().toISOString(),
+        });
+
+        this.isResultSaved = true;
+      }
 
       selectedButton.classList.add(
         result.correct
@@ -231,16 +262,32 @@ export class TestsPage {
     );
   }
 
-  private showFinish(): void {
-    this.element.replaceChildren();
-
-    const container = DOMHelper.createElement('div', 'tests-page__finish');
-
-    const card = DOMHelper.createElement('div', 'tests-page__finish-card');
-
-    const scorePercent = Math.round(
-      (this.correctAnswersCount / this.totalQuestions) * PERCENT_MULTIPLIER,
+  private createFinishActions(): HTMLElement {
+    const actions = DOMHelper.createElement(
+      'div',
+      'tests-page__finish-actions',
     );
+
+    const restartButton = new Button('Пройти заново', 'orange', () => {
+      this.questionIndex = INITIAL_ATTEMPTS;
+      this.correctAnswersCount = INITIAL_ATTEMPTS;
+      this.isResultSaved = false;
+      this.element.replaceChildren();
+      this.render();
+      this.loadQuestion();
+    });
+
+    const backButton = new Button('К темам', 'grey', () => {
+      Router.go('/');
+    });
+
+    actions.append(restartButton.getElement(), backButton.getElement());
+
+    return actions;
+  }
+
+  private createFinishContent(scorePercent: number): HTMLElement {
+    const card = DOMHelper.createElement('div', 'tests-page__finish-card');
 
     const title = DOMHelper.createElement(
       'h2',
@@ -260,29 +307,25 @@ export class TestsPage {
       `${scorePercent}% правильных ответов`,
     );
 
-    const actions = DOMHelper.createElement(
-      'div',
-      'tests-page__finish-actions',
+    card.append(title, score, percent, this.createFinishActions());
+
+    return card;
+  }
+
+  private showFinish(): void {
+    this.element.replaceChildren();
+
+    const container = DOMHelper.createElement('div', 'tests-page__finish');
+
+    const scorePercent = Math.round(
+      (this.correctAnswersCount / this.totalQuestions) * PERCENT_MULTIPLIER,
     );
 
-    const restartButton = new Button('Пройти заново', 'orange', () => {
-      this.questionIndex = INITIAL_ATTEMPTS;
-      this.correctAnswersCount = INITIAL_ATTEMPTS;
-      this.element.replaceChildren();
-      this.render();
-      this.loadQuestion();
-    });
-    const backButton = new Button('К темам', 'grey', () => {
-      Router.go('/');
-    });
-    const mascot = DOMHelper.createElement('img', 'tests-page__finish-image');
-    mascot.src = new URL(
-      '../../assets/img/excellent.png',
-      import.meta.url,
-    ).toString();
-    actions.append(restartButton.getElement(), backButton.getElement());
-    card.append(title, score, percent, actions);
-    container.append(card, mascot);
+    container.append(
+      this.createFinishContent(scorePercent),
+      createFinishMascot(),
+    );
+
     this.element.append(container);
   }
 
