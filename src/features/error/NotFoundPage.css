@@ -4,6 +4,7 @@
   align-items: center;
   gap: 40px;
   min-height: calc(100vh - 75px);
+  width: 100%;
   text-align: center;
   padding: 20px;
   margin: 0 auto;

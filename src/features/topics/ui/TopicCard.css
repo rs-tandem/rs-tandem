@@ -63,7 +63,7 @@
   font-size: 28px;
   font-weight: var(--font-weight-bold);
 }
-.topic-core-js {
+.topic-basics {
   background:
     radial-gradient(
       circle at top left,
@@ -79,7 +79,7 @@
     0 18px 40px rgba(0, 0, 0, 0.3);
 }
 
-.topic-closures {
+.topic-closure {
   background:
     radial-gradient(
       circle at top left,
@@ -94,7 +94,7 @@
     0 0 26px rgba(61, 156, 255, 0.2),
     0 18px 40px rgba(0, 0, 0, 0.3);
 }
-.topic-asynchrony {
+.topic-async {
   background:
     radial-gradient(
       circle at top left,
@@ -109,7 +109,7 @@
     0 0 26px rgba(173, 89, 255, 0.18),
     0 18px 40px rgba(0, 0, 0, 0.3);
 }
-.topic-data-structures {
+.topic-structures {
   background:
     radial-gradient(
       circle at top left,

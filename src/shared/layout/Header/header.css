@@ -69,8 +69,26 @@
 }
 
 @media (max-width: 700px) {
-  .header-right {
-    align-items: start;
+  .app-header {
+    padding: 14px 20px;
+  }
+
+  .header-container {
+    align-items: flex-start;
     flex-direction: column;
+  }
+
+  .header-left {
+    width: 100%;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .header-title {
+    font-size: 18px;
   }
 }
