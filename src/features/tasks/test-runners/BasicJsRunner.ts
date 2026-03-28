@@ -8,6 +8,7 @@ export class BasicJsRunner extends TestRunner {
   static run(code: string, tests: TestCase[]): CheckResult {
     const results: CheckResult['results'] = [];
     try {
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
       const userFunction = new Function(`return ${code}`)();
       tests.forEach((test) => {
         try {

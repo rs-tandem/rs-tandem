@@ -10,6 +10,7 @@ export class ClosureRunner extends TestRunner {
     try {
       tests.forEach((test) => {
         try {
+          // eslint-disable-next-line @typescript-eslint/no-implied-eval
           const testFunction = new Function(`
             ${code}
             return ${test.input};

@@ -13,6 +13,7 @@ import {
 export class AsyncRunner extends TestRunner {
   static async run(code: string, tests: TestCase[]): Promise<CheckResult> {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
       const userFunction = new Function(`return ${code}`)();
       const results = await this.executeAsyncTests(userFunction, tests);
       return this.createCheckResult(results);
@@ -93,7 +94,7 @@ export class AsyncRunner extends TestRunner {
   }
 
   private static async executeAsyncTests(
-    userFunction: Function,
+    userFunction: (...args: unknown[]) => unknown,
     tests: TestCase[],
   ): Promise<CheckResult['results']> {
     return Promise.all(
@@ -105,6 +106,7 @@ export class AsyncRunner extends TestRunner {
             const inputString = test.input[ZERO];
             const ms = test.input[ONE];
 
+            // eslint-disable-next-line @typescript-eslint/no-implied-eval
             const evaluator = new Function(`
               ${userFunction.toString()}
               return ${inputString};
@@ -117,7 +119,7 @@ export class AsyncRunner extends TestRunner {
               return {
                 input: test.input,
                 expected: test.output,
-                actual: result,
+                actual: result as TestOutput,
                 passed: false,
                 error: 'Функция должна возвращать Promise',
               };
@@ -126,6 +128,7 @@ export class AsyncRunner extends TestRunner {
             return await this.processAsyncTestResult(result, test);
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-implied-eval
           const parsedInput = [new Function(`return ${test.input}`)()];
           const result = userFunction(...parsedInput);
 
@@ -133,7 +136,7 @@ export class AsyncRunner extends TestRunner {
             return {
               input: test.input,
               expected: test.output,
-              actual: result,
+              actual: result as TestOutput,
               passed: false,
               error: 'Функция должна возвращать Promise',
             };

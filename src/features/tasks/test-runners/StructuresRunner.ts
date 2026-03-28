@@ -16,6 +16,7 @@ export class StructuresRunner extends TestRunner {
   }
 
   private static createStructureInstance(code: string): unknown {
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
     const StructureClass = new Function(`return ${code}`)();
     return new StructureClass();
   }
@@ -43,9 +44,9 @@ export class StructuresRunner extends TestRunner {
         const { name, args, hasReturn } = test.methodCall;
 
         if (hasReturn) {
-          actual = (obj[name] as Function)(...args);
+          actual = (obj[name] as (...args: unknown[]) => TestOutput)(...args);
         } else {
-          (obj[name] as Function)(...args);
+          (obj[name] as (...args: unknown[]) => unknown)(...args);
           actual = undefined;
         }
       } else {
@@ -62,7 +63,9 @@ export class StructuresRunner extends TestRunner {
       if (test.afterState && test.afterState.length > ZERO) {
         test.afterState.forEach((check) => {
           if (!stateError) {
-            const stateValue = (obj[check.method] as Function)();
+            const stateValue = (
+              obj[check.method] as (...args: unknown[]) => unknown
+            )();
             if (!isEqual(stateValue, check.expected)) {
               stateError = `Ожидалось ${check.method}: ${JSON.stringify(check.expected)}, получено: ${JSON.stringify(stateValue)}`;
             }
