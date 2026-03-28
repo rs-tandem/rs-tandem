@@ -43,6 +43,8 @@ export default tseslint.config(
   {
     files: ["src/**/*.ts", "src/*.ts", "src/**/*.tsx"],
     rules: {
+      "@typescript-eslint/no-unsafe-function-type": "off",
+      "@typescript-eslint/no-implied-eval": "off",
       "max-lines-per-function": [
         "error",
         { max: 60, skipBlankLines: true, skipComments: true },

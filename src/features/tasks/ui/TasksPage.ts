@@ -1,6 +1,9 @@
 import { Router } from 'vanilla-routing';
 
+import { setQuestionResult } from '../../../core/store/questionsSlice';
+import { store } from '../../../core/store/Store';
 import { Button } from '../../../shared/components';
+import { Popup } from '../../../shared/components/Popup/Popup';
 import { Spinner } from '../../../shared/components/Spinner/Spinner';
 import { DOMHelper } from '../../../shared/utils/createElement';
 import type { Challenge, CheckResult } from '../tasks.types';
@@ -39,6 +42,8 @@ export class TasksPage {
     { id: number; title: string; difficulty: string }[]
   > = {};
 
+  private titleContainer: HTMLElement | null = null;
+
   constructor(private readonly topicId: string) {
     this.spinner = new Spinner();
     this.element = DOMHelper.createElement('section', 'tasks-page');
@@ -48,6 +53,7 @@ export class TasksPage {
   }
 
   private render(): void {
+    DOMHelper.clearChildren(this.element);
     const header = DOMHelper.createElement('div', 'tasks-page__header');
 
     const backBtn = new Button('Назад', 'grey', () =>
@@ -105,6 +111,18 @@ export class TasksPage {
         challenge.title,
       );
 
+      const state = store.getState();
+      const isSolved = state.questions.sessionResults[challenge.id];
+
+      if (isSolved) {
+        const solvedMark = DOMHelper.createElement(
+          'span',
+          'menu-item__solved',
+          '  ✓ Решено',
+        );
+        challengeItem.appendChild(solvedMark);
+      }
+
       challengeItem.addEventListener('click', async () => {
         this.currentChallenge = await ChallengeService.getChallengeById(
           challenge.id,
@@ -150,22 +168,41 @@ export class TasksPage {
       `tasks-page__difficulty tasks-page__difficulty--${this.currentChallenge!.difficulty}`,
       this.currentChallenge!.difficulty,
     );
+    this.titleContainer = DOMHelper.createElement(
+      'div',
+      'tasks-page__title-container',
+    );
 
     const taskTitle = DOMHelper.createElement(
       'h2',
       'tasks-page__task-title',
       this.currentChallenge!.title,
     );
+
     const taskDescription = DOMHelper.createElement(
       'p',
       'tasks-page__task-description',
       this.currentChallenge!.description,
     );
+
+    this.titleContainer.appendChild(taskTitle);
+    const state = store.getState();
+    const isSolved = state.questions.sessionResults[this.currentChallenge!.id];
+
+    if (isSolved) {
+      const solvedMark = DOMHelper.createElement(
+        'span',
+        'tasks-page__solved-mark',
+        '✓ Решено',
+      );
+      this.titleContainer.appendChild(solvedMark);
+    }
+
     const examplesSection = this.createExamplesSection();
 
     this.taskInfo.append(
       difficultyBadge,
-      taskTitle,
+      this.titleContainer,
       taskDescription,
       examplesSection,
     );
@@ -314,6 +351,7 @@ export class TasksPage {
           this.currentChallenge.tests,
         );
         this.showResults(result);
+        this.markChallengeAsSolvedIfNeeded(result);
       }
       if (this.currentChallenge.category === 'closures') {
         result = ChallengeService.runClosureCode(
@@ -321,12 +359,53 @@ export class TasksPage {
           this.currentChallenge.tests,
         );
         this.showResults(result);
+        this.markChallengeAsSolvedIfNeeded(result);
+      }
+      if (this.currentChallenge.category === 'asynchrony') {
+        result = ChallengeService.runAsyncCode(
+          code,
+          this.currentChallenge.tests,
+        );
+        this.showResults(await result);
+        this.markChallengeAsSolvedIfNeeded(await result);
+      }
+      if (this.currentChallenge.category === 'data-structures') {
+        result = ChallengeService.runStructuresCode(
+          code,
+          this.currentChallenge.tests,
+        );
+        this.showResults(result);
+        this.markChallengeAsSolvedIfNeeded(result);
       }
     }, BASE_TIME_SPINNER);
     // const resultTests = await ChallengeService.checkSolution(
     //   this.currentChallenge.id,
     //   this.codeEditor.value,
     // );
+  }
+
+  private markChallengeAsSolvedIfNeeded(result: CheckResult): void {
+    if (result.allPassed && this.currentChallenge) {
+      store.dispatch(
+        setQuestionResult({
+          id: this.currentChallenge.id,
+          solved: true,
+        }),
+      );
+    }
+    this.loadChallengesMenu();
+
+    if (
+      this.titleContainer &&
+      !this.titleContainer.querySelector('.tasks-page__solved-mark')
+    ) {
+      const solvedMark = DOMHelper.createElement(
+        'span',
+        'tasks-page__solved-mark',
+        '✓ Решено',
+      );
+      this.titleContainer.appendChild(solvedMark);
+    }
   }
 
   private static showError(message: string, div: HTMLElement): void {
@@ -403,10 +482,24 @@ export class TasksPage {
 
   private async showSolution(): Promise<void> {
     if (!this.currentChallenge || !this.codeEditor) return;
-    this.solution = await ChallengeService.getSolution(
-      this.currentChallenge.id,
-    );
-    this.codeEditor.value = this.solution.solution;
+
+    const popup = new Popup({
+      message: 'Вы уверены, что хотите посмотреть решение?',
+      confirmText: 'Да',
+      cancelText: 'Нет',
+      showCancel: true,
+      onConfirm: async () => {
+        this.solution = await ChallengeService.getSolution(
+          this.currentChallenge!.id,
+        );
+        this.codeEditor!.value = this.solution.solution;
+      },
+      onCancel: () => {
+        // Заглушка пока
+      },
+    });
+
+    popup.show();
   }
 
   public getElement(): HTMLElement {
