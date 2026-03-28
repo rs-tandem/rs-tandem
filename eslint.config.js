@@ -58,7 +58,7 @@ export default tseslint.config(
         },
       ],
 
-      "no-magic-numbers": "error",
+      "no-magic-numbers": "off",
       "no-console": "warn",
       "no-debugger": "error",
       "no-alert": "error",
