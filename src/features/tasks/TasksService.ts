@@ -1,6 +1,8 @@
-import { isEqual } from 'lodash';
-
-import type { Challenge, CheckResult, TestCase } from './tasks.types';
+import type { Challenge, CheckResult } from './tasks.types';
+import { AsyncRunner } from './test-runners/AsyncRunner';
+import { BasicJsRunner } from './test-runners/BasicJsRunner';
+import { ClosureRunner } from './test-runners/ClosureRunner';
+import { StructuresRunner } from './test-runners/StructuresRunner';
 
 const API_BASE_URL = 'http://5.129.197.181/api/challenges';
 
@@ -96,89 +98,25 @@ export class ChallengeService {
     }
   }
 
-  static runBasicJsCode(code: string, tests: TestCase[]): CheckResult {
-    const results: CheckResult['results'] = [];
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      const userFunction = new Function(`return ${code}`)();
-      tests.forEach((test) => {
-        try {
-          const actual = userFunction(...test.input);
-          const passed = isEqual(actual, test.output);
-          results.push({
-            input: test.input,
-            expected: test.output,
-            actual,
-            passed,
-          });
-        } catch (error) {
-          results.push({
-            input: test.input,
-            expected: test.output,
-            actual: undefined,
-            passed: false,
-            error: error instanceof Error ? error.message : String(error),
-          });
-        }
-      });
-
-      const allPassed = results.every((r) => r.passed);
-      return {
-        allPassed,
-        results,
-        message: allPassed ? 'Тесты пройдены' : 'Тесты не пройдены',
-      };
-    } catch (error) {
-      return {
-        allPassed: false,
-        results: [],
-        message: error instanceof Error ? error.message : String(error),
-      };
-    }
+  static runBasicJsCode(code: string, tests: Challenge['tests']): CheckResult {
+    return BasicJsRunner.run(code, tests);
   }
 
-  static runClosureCode(code: string, tests: TestCase[]): CheckResult {
-    const results: CheckResult['results'] = [];
-    try {
-      tests.forEach((test) => {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-implied-eval
-          const testFunction = new Function(`
-            ${code}
-            return ${test.input};
-          `);
+  static runClosureCode(code: string, tests: Challenge['tests']): CheckResult {
+    return ClosureRunner.run(code, tests);
+  }
 
-          const actual = testFunction();
-          const passed = isEqual(actual, test.output);
-          results.push({
-            input: test.input,
-            expected: test.output,
-            actual,
-            passed,
-          });
-        } catch (error) {
-          results.push({
-            input: test.input,
-            expected: test.output,
-            actual: undefined,
-            passed: false,
-            error: error instanceof Error ? error.message : String(error),
-          });
-        }
-      });
+  static async runAsyncCode(
+    code: string,
+    tests: Challenge['tests'],
+  ): Promise<CheckResult> {
+    return AsyncRunner.run(code, tests);
+  }
 
-      const allPassed = results.every((r) => r.passed);
-      return {
-        allPassed,
-        results,
-        message: allPassed ? 'Тесты пройдены' : 'Тесты не пройдены',
-      };
-    } catch (error) {
-      return {
-        allPassed: false,
-        results: [],
-        message: error instanceof Error ? error.message : String(error),
-      };
-    }
+  static runStructuresCode(
+    code: string,
+    tests: Challenge['tests'],
+  ): CheckResult {
+    return StructuresRunner.run(code, tests);
   }
 }

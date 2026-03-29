@@ -94,10 +94,10 @@
 }
 
 .tasks-page__editor {
+  overflow-y: scroll;
   background: var(--color-bg-dark);
   border-radius: 12px;
   border: 1px solid var(--color-gray-border);
-  overflow: hidden;
   width: 100%;
   height: 100%;
   min-height: 200px;
@@ -115,6 +115,7 @@
 }
 
 .tasks-page__results {
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -124,8 +125,8 @@
   background: var(--color-black-alpha-background);
   border-radius: 12px;
   padding: 16px;
-  min-height: 100px;
-  max-height: 100%;
+  /* min-height: 100px; */
+  max-height: 50%;
   /* overflow-y: auto; */
 }
 
@@ -208,7 +209,7 @@
 }
 
 .tasks-page__menu {
-  min-width: 50%;
+  min-width: fit-content;
   width: 100%;
   max-width: 400px;
   background: var(--color-black-alpha-background);
@@ -224,6 +225,11 @@
 }
 
 .menu-item {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: start;
   padding: 6px 12px;
   margin: 4px 0;
   cursor: pointer;
@@ -237,6 +243,16 @@
 .menu-item:hover {
   color: black;
   background: white;
+}
+
+.menu-item__solved {
+  color: green;
+  font-size: 12px;
+}
+
+.tasks-page__solved-mark {
+  color: green;
+  font-size: 16px;
 }
 
 @media (max-width: 768px) {

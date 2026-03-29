@@ -30,4 +30,5 @@ export interface QuestionsState {
   currentIndex: number;
   results: Results | null;
   loading: boolean;
+  sessionResults: Record<number, boolean>;
 }

@@ -1,6 +1,20 @@
+export type TestInput = (string | number)[];
+export type TestOutput = string | number | boolean | null | undefined;
+
 export interface TestCase {
-  input: unknown[];
-  output: unknown;
+  input: (string | number)[];
+  output: string | number | boolean | null;
+  type?: 'method' | 'function' | 'assert' | 'delay' | 'reject';
+  methodCall?: {
+    type: 'method';
+    name: string;
+    args: (string | number)[];
+    hasReturn: boolean;
+  };
+  afterState?: {
+    method: string;
+    expected: undefined;
+  }[];
 }
 
 export interface Challenge {
@@ -25,9 +39,9 @@ export interface CheckResult {
 
 export interface TestResult {
   testNumber?: number;
-  input: unknown[];
-  expected: unknown;
-  actual: unknown;
+  input: TestInput;
+  expected: TestOutput;
+  actual: string | number | boolean | null | undefined;
   passed: boolean;
   error?: string;
 }
