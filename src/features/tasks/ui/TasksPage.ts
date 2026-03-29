@@ -345,7 +345,7 @@ export class TasksPage {
       ).tests;
       const code = this.codeEditor.value.trim();
       let result;
-      if (this.currentChallenge.category === 'core-js') {
+      if (this.currentChallenge.category === 'basics') {
         result = ChallengeService.runBasicJsCode(
           code,
           this.currentChallenge.tests,
@@ -353,7 +353,7 @@ export class TasksPage {
         this.showResults(result);
         this.markChallengeAsSolvedIfNeeded(result);
       }
-      if (this.currentChallenge.category === 'closures') {
+      if (this.currentChallenge.category === 'closure') {
         result = ChallengeService.runClosureCode(
           code,
           this.currentChallenge.tests,
@@ -361,7 +361,7 @@ export class TasksPage {
         this.showResults(result);
         this.markChallengeAsSolvedIfNeeded(result);
       }
-      if (this.currentChallenge.category === 'asynchrony') {
+      if (this.currentChallenge.category === 'async') {
         result = ChallengeService.runAsyncCode(
           code,
           this.currentChallenge.tests,
@@ -369,7 +369,7 @@ export class TasksPage {
         this.showResults(await result);
         this.markChallengeAsSolvedIfNeeded(await result);
       }
-      if (this.currentChallenge.category === 'data-structures') {
+      if (this.currentChallenge.category === 'structures') {
         result = ChallengeService.runStructuresCode(
           code,
           this.currentChallenge.tests,
