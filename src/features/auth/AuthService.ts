@@ -7,6 +7,7 @@ import {
   onAuthChange,
   getErrorMessage,
   signInWithGoogle,
+  resetPassword,
   type User,
 } from '../../core/firebase/auth';
 
@@ -52,6 +53,17 @@ export class AuthService {
   }> {
     try {
       await signInWithGoogle();
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: getErrorMessage(error) };
+    }
+  }
+
+  public async resetPassword(
+    email: string,
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      await resetPassword(email);
       return { success: true };
     } catch (error) {
       return { success: false, error: getErrorMessage(error) };

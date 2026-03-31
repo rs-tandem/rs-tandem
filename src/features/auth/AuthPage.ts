@@ -290,17 +290,28 @@ export class AuthPage {
     }
   }
 
-  private handleForgotPassword(): void {
+  private async handleForgotPassword(): Promise<void> {
     const email = this.emailInput.getValue().trim();
 
     if (!email) {
       this.showError('Введите email для восстановления пароля');
       this.emailInput.setError(true);
       this.emailInput.getElement().focus();
+      return;
     }
 
-    // TODO: Реализовать через Firebase
-    // alert('Письмо для восстановления пароля отправлено на ${email}');
+    this.setLoading(true);
+    this.clearError();
+
+    const result = await authService.resetPassword(email);
+
+    this.setLoading(false);
+
+    if (result.success) {
+      this.showSuccess('Письмо отправлено! Проверьте почту');
+    } else {
+      this.showError(result.error || 'Не удалось отправить письмо');
+    }
   }
 
   private showError(message: string): void {
@@ -308,9 +319,15 @@ export class AuthPage {
     this.errorMessage.classList.add('show');
   }
 
+  private showSuccess(message: string): void {
+    this.errorMessage.textContent = message;
+    this.errorMessage.classList.remove('show');
+    this.errorMessage.classList.add('show', 'success');
+  }
+
   private clearError(): void {
     this.errorMessage.textContent = '';
-    this.errorMessage.classList.remove('show');
+    this.errorMessage.classList.remove('show', 'success');
     this.emailInput.setError(false);
     this.passwordInput.setError(false);
   }

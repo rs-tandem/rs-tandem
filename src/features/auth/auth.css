@@ -191,6 +191,12 @@
   display: block;
 }
 
+.error-message.success {
+  color: #4ca330;
+  background-color: rgba(76, 163, 48, 0.1);
+  border-left-color: #4ca330;
+}
+
 .auth-form.loading {
   opacity: 0.6;
   pointer-events: none;

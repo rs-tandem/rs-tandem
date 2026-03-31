@@ -6,6 +6,7 @@ import {
   updateProfile,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
   type User,
   type UserCredential,
 } from 'firebase/auth';
@@ -95,6 +96,10 @@ export function getErrorMessage(error: unknown): string {
   }
 
   return 'Неизвестная ошибка';
+}
+
+export async function resetPassword(email: string): Promise<void> {
+  await sendPasswordResetEmail(auth, email);
 }
 
 export type { User };
