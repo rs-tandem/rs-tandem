@@ -32,6 +32,8 @@ export class AiPage {
 
   private isLoading = false;
 
+  private typingIndicatorEl: HTMLElement | null = null;
+
   constructor(private readonly topicId: string) {
     this.element = DOMHelper.createElement('section', 'ai-page');
     this.render();
@@ -245,8 +247,84 @@ export class AiPage {
   private parseInlineMarkdown(text: string): Node[] {
     const nodes: Node[] = [];
 
+    const lines = text.split('\n');
+
+    lines.forEach((line, lineIndex) => {
+      const headingMatch = line.match(/^(#{1,3})\s+(.+)/);
+      if (headingMatch) {
+        const level = headingMatch[1]!.length;
+        const heading = document.createElement(`h${level}`);
+        heading.className = `ai-page__heading ai-page__h${level}`;
+        heading.textContent = headingMatch[2] ?? '';
+        nodes.push(heading);
+
+        if (lineIndex < lines.length - 1) {
+          nodes.push(document.createElement('br'));
+        }
+        return;
+      }
+
+      const listMatch = line.match(/^[-*•]\s+(.+)/);
+      if (listMatch) {
+        const li = DOMHelper.createElement('div', 'ai-page__list-item');
+        const bullet = DOMHelper.createElement('span', 'ai-page__bullet', '•');
+        const content = DOMHelper.createElement('span', '');
+
+        content.append(...this.parseInlineBoldAndCode(listMatch[1] ?? ''));
+        li.append(bullet, content);
+        nodes.push(li);
+        if (lineIndex < lines.length - 1) {
+          nodes.push(document.createElement('br'));
+        }
+        return;
+      }
+
+      const orderedMatch = line.match(/^(\d+)\.\s+(.+)/);
+      if (orderedMatch) {
+        const li = DOMHelper.createElement('div', 'ai-page__list-item');
+        const num = DOMHelper.createElement(
+          'span',
+          'ai-page__bullet',
+          `${orderedMatch[1]}.`,
+        );
+        const content = DOMHelper.createElement('span', '');
+        content.append(...this.parseInlineBoldAndCode(orderedMatch[2] ?? ''));
+        li.append(num, content);
+        nodes.push(li);
+        if (lineIndex < lines.length - 1) {
+          nodes.push(document.createElement('br'));
+        }
+        return;
+      }
+
+      if (line.match(/^[-*]{3,}$/)) {
+        nodes.push(document.createElement('hr'));
+        return;
+      }
+
+      if (line) {
+        nodes.push(...this.parseInlineBoldAndCode(line));
+      }
+
+      if (lineIndex < lines.length - 1) {
+        nodes.push(document.createElement('br'));
+      }
+    });
+
+    return nodes;
+  }
+
+  private parseInlineBoldAndCode(text: string): Node[] {
+    const nodes: Node[] = [];
+    const minLength = 2;
+    const minLengthBold = 4;
+
     text.split(/(`[^`]+`)/).forEach((part) => {
-      if (part.startsWith('`') && part.endsWith('`')) {
+      if (
+        part.startsWith('`') &&
+        part.endsWith('`') &&
+        part.length > minLength
+      ) {
         const code = DOMHelper.createElement('code', 'ai-page__inline-code');
         code.textContent = part.slice(BACKTICK_OFFSET, -BACKTICK_OFFSET);
         nodes.push(code);
@@ -254,7 +332,11 @@ export class AiPage {
       }
 
       part.split(/(\*\*[^*]+\*\*)/).forEach((boldPart) => {
-        if (boldPart.startsWith('**') && boldPart.endsWith('**')) {
+        if (
+          boldPart.startsWith('**') &&
+          boldPart.endsWith('**') &&
+          boldPart.length > minLengthBold
+        ) {
           const strong = document.createElement('strong');
           strong.textContent = boldPart.slice(
             BOLD_MARKER_LENGTH,
@@ -264,14 +346,9 @@ export class AiPage {
           return;
         }
 
-        boldPart.split('\n').forEach((line, index, arr) => {
-          if (line) {
-            nodes.push(document.createTextNode(line));
-          }
-          if (index < arr.length - 1) {
-            nodes.push(document.createElement('br'));
-          }
-        });
+        if (boldPart) {
+          nodes.push(document.createTextNode(boldPart));
+        }
       });
     });
 
@@ -299,11 +376,12 @@ export class AiPage {
   private showTypingIndicator(): void {
     if (!this.messagesContainer) return;
 
+    if (this.typingIndicatorEl) return;
+
     const indicator = DOMHelper.createElement(
       'div',
       'ai-page__message ai-page__message--model ai-page__typing',
     );
-    indicator.id = 'typing-indicator';
 
     const avatar = DOMHelper.createElement('div', 'ai-page__avatar', '🤖');
     const bubble = DOMHelper.createElement(
@@ -321,11 +399,14 @@ export class AiPage {
     bubble.append(dots);
     indicator.append(avatar, bubble);
     this.messagesContainer.append(indicator);
+
+    this.typingIndicatorEl = indicator;
     DOMHelper.scrollToBottom(this.messagesContainer);
   }
 
   private removeTypingIndicator(): void {
-    document.getElementById('typing-indicator')?.remove();
+    this.typingIndicatorEl?.remove();
+    this.typingIndicatorEl = null;
   }
 
   private addErrorMessage(text: string): void {
