@@ -61,10 +61,39 @@ export class AiService {
       throw new Error('AiService не инициализирован. Вызови init() сначала.');
     }
 
-    const result = await this.chatSession.sendMessage(userText);
+    try {
+      const result = await this.chatSession.sendMessage(userText);
+      const response = await result.response;
+      const text = response.text();
 
-    const response = await result.response;
-    return response.text();
+      if (!text || !text.trim()) {
+        return 'Модель вернула пустой ответ. Попробуйте переформулировать вопрос.';
+      }
+
+      return text;
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('quota') || error.message.includes('429')) {
+          throw new Error('Превышен лимит запросов. Подождите немного.');
+        }
+        if (
+          error.message.includes('API_KEY') ||
+          error.message.includes('403')
+        ) {
+          throw new Error(
+            'Ошибка авторизации ИИ. Проверьте настройки Firebase.',
+          );
+        }
+        if (
+          error.message.includes('fetch') ||
+          error.message.includes('network')
+        ) {
+          throw new Error('Нет соединения с сервером ИИ. Проверьте интернет.');
+        }
+      }
+
+      throw error;
+    }
   }
 
   reset(): void {
