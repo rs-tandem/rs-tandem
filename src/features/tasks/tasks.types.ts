@@ -26,9 +26,8 @@ export interface Challenge {
   functionName: string;
   examples: TestCase[];
   tests: TestCase[];
-  solution: string;
-  solutionExplanation: string;
-  testRunner?: string;
+  solution?: string;
+  solutionExplanation?: string;
 }
 
 export interface CheckResult {

@@ -33,7 +33,11 @@ export class TasksPage {
 
   private rightPanel: HTMLElement | null = null;
 
-  private solution: { solution: string; explanation: string } | null = null;
+  private solution: string | null = null;
+
+  private solutionExplanation: string | null = null;
+
+  private solutionExplanationDiv: HTMLElement | null = null;
 
   private challengesMenu: HTMLElement | null = null;
 
@@ -303,6 +307,7 @@ export class TasksPage {
         this.currentChallenge =
           await ChallengeService.getRandomChallengeByTopic(this.topicId);
         this.updateTaskDisplay(this.leftPanel!);
+        this.solutionExplanation = '';
       } catch {
         TasksPage.showError('Не удалось загрузить задачу.', this.leftPanel!);
         TasksPage.showError('Не удалось загрузить задачу.', this.editorDiv!);
@@ -311,6 +316,7 @@ export class TasksPage {
   }
 
   private updateTaskDisplay(leftPanel: HTMLElement): void {
+    this.solutionExplanation = '';
     if (!this.currentChallenge || !leftPanel) return;
     DOMHelper.clearChildren(leftPanel);
     DOMHelper.clearChildren(this.editorDiv!);
@@ -489,10 +495,33 @@ export class TasksPage {
       cancelText: 'Нет',
       showCancel: true,
       onConfirm: async () => {
-        this.solution = await ChallengeService.getSolution(
+        const res = await ChallengeService.getSolution(
           this.currentChallenge!.id,
         );
-        this.codeEditor!.value = this.solution.solution;
+        this.solution = res.solution;
+        this.solutionExplanation = res.solutionExplanation;
+        if (this.solutionExplanation && this.editorDiv && this.codeEditor) {
+          this.solutionExplanationDiv = DOMHelper.createElement(
+            'div',
+            'tasks-page__solutionExplanation-div',
+          );
+
+          this.solutionExplanationDiv.appendChild(
+            DOMHelper.createElement(
+              'p',
+              'tasks-page__solutionExplanation-p',
+              this.solutionExplanation,
+            ),
+          );
+
+          this.editorDiv.insertBefore(
+            this.solutionExplanationDiv,
+            this.codeEditor,
+          );
+        }
+        if (this.codeEditor) {
+          this.codeEditor.value = this.solution;
+        }
       },
       onCancel: () => {
         // Заглушка пока
