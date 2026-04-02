@@ -3,6 +3,7 @@ import { Router } from 'vanilla-routing';
 
 import mascotUrl from '../../assets/img/mascot_laptop_transparent.png';
 import { Button, Input } from '../../shared/components';
+import { PasswordStrength } from '../../shared/components/PasswordStrength/PasswordStrength';
 import { DOMHelper } from '../../shared/utils/createElement';
 
 import { authService } from './AuthService';
@@ -28,6 +29,8 @@ export class AuthPage {
 
   private googleButton: Button;
 
+  private passwordStrength: PasswordStrength;
+
   constructor() {
     this.element = DOMHelper.createElement('div', 'auth-page');
 
@@ -40,6 +43,8 @@ export class AuthPage {
     this.loginButton = new Button('Войти', 'orange');
     this.registerButton = new Button('Регистрация', 'grey');
     this.googleButton = new Button('Войти через Google', 'grey');
+
+    this.passwordStrength = new PasswordStrength();
 
     this.render();
   }
@@ -77,6 +82,7 @@ export class AuthPage {
     const form = DOMHelper.createElement('form', 'auth-form');
     form.append(this.emailInput.getWrapperElement());
     form.append(this.passwordInput.getWrapperElement());
+    form.append(this.passwordStrength.getElement());
 
     if (!this.isLoginMode) {
       form.append(this.nameInput.getWrapperElement());
@@ -154,6 +160,12 @@ export class AuthPage {
 
     this.emailInput.onChange(() => this.clearError());
     this.passwordInput.onChange(() => this.clearError());
+
+    this.passwordInput.onChange((value) => {
+      if (!this.isLoginMode) {
+        this.passwordStrength.update(value);
+      }
+    });
   }
 
   private async handleSubmit(event: Event): Promise<void> {
