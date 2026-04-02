@@ -38,3 +38,44 @@
   -webkit-box-shadow: 0 0 0 1000px var(--color-bg-dark) inset !important;
   -webkit-text-fill-color: var(--color-text-white) !important;
 }
+
+.input-wrapper--with-toggle {
+  position: relative;
+}
+
+.input-wrapper--with-toggle .input {
+  padding-right: 48px;
+  border-radius: 4px;
+}
+
+.input-toggle-password {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 42px;
+  background: var(--color-bg-dark);
+  border: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  color: var(--color-text-white-alpha);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.2s,
+    background 0.2s;
+  outline: none;
+  z-index: 2;
+}
+
+.input-toggle-password:hover {
+  color: var(--color-text-white);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.input-toggle-password:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.3);
+  outline-offset: -2px;
+}
