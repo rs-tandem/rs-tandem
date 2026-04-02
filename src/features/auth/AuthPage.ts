@@ -33,6 +33,7 @@ export class AuthPage {
 
     this.emailInput = new Input('Email', 'email');
     this.passwordInput = new Input('Пароль', 'password');
+    this.passwordInput.enablePasswordToggle();
     this.nameInput = new Input('Имя (опционально)', 'text');
     this.errorMessage = DOMHelper.createElement('div', 'error-message');
 
