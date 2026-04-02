@@ -54,6 +54,7 @@ export default tseslint.config(
           ignore: [
             '^firebase/',
             '^@firebase/',
+            '\\.css$',
           ],
         },
       ],
