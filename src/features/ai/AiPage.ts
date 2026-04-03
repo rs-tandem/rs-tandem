@@ -32,6 +32,27 @@ export class AiPage {
 
   private isLoading = false;
 
+  private chatHistory: ChatMessage[] = [];
+
+  private loadHistory(topicId: string): ChatMessage[] {
+    const key = `ai-chat-history-${topicId}`;
+    const saved = localStorage.getItem(key);
+    if (!saved) return [];
+
+    try {
+      const history = JSON.parse(saved);
+      return Array.isArray(history) ? history : [];
+    } catch {
+      localStorage.removeItem(key);
+      return [];
+    }
+  }
+
+  private saveHistory(): void {
+    const key = `ai-chat-history-${this.topicId}`;
+    localStorage.setItem(key, JSON.stringify(this.chatHistory));
+  }
+
   private typingIndicatorEl: HTMLElement | null = null;
 
   constructor(private readonly topicId: string) {
@@ -137,16 +158,32 @@ export class AiPage {
   private async initAi(): Promise<void> {
     this.showTypingIndicator();
     this.setInputDisabled(true);
+    const intervalMax = 100;
+    const intervalMin = 50;
 
     try {
-      await aiService.init(this.topicId);
+      this.chatHistory = this.loadHistory(this.topicId);
 
-      const greeting = await aiService.sendMessage(
-        'Начни сессию подготовки к интервью. Поприветствуй меня и задай первый вопрос.',
-      );
+      await aiService.init(this.topicId, this.chatHistory);
 
       this.removeTypingIndicator();
-      this.addMessage({ role: 'model', text: greeting });
+
+      if (this.chatHistory.length > 0) {
+        this.chatHistory.forEach((msg) => this.renderMessageWithoutScroll(msg));
+
+        setTimeout(() => {
+          this.scrollToBottom();
+          setTimeout(() => this.scrollToBottom(), intervalMax);
+        }, intervalMin);
+      } else {
+        const greeting = await aiService.sendMessage(
+          'Начни сессию подготовки к интервью. Поприветствуй меня и задай первый вопрос.',
+        );
+
+        this.addMessage({ role: 'model', text: greeting });
+        this.chatHistory.push({ role: 'model', text: greeting });
+        this.saveHistory();
+      }
     } catch (error) {
       this.removeTypingIndicator();
       this.addErrorMessage(
@@ -159,6 +196,34 @@ export class AiPage {
     }
   }
 
+  private renderMessageWithoutScroll(message: ChatMessage): void {
+    if (!this.messagesContainer) return;
+
+    const wrapper = DOMHelper.createElement(
+      'div',
+      `ai-page__message ai-page__message--${message.role}`,
+    );
+
+    if (message.role === 'model') {
+      const avatar = DOMHelper.createElement('div', 'ai-page__avatar', '🤖');
+      const bubble = DOMHelper.createElement(
+        'div',
+        'ai-page__bubble ai-page__bubble--model',
+      );
+      bubble.append(...this.parseMarkdown(message.text));
+      wrapper.append(avatar, bubble);
+    } else {
+      const bubble = DOMHelper.createElement(
+        'div',
+        'ai-page__bubble ai-page__bubble--user',
+      );
+      bubble.textContent = message.text;
+      wrapper.append(bubble);
+    }
+
+    this.messagesContainer.append(wrapper);
+  }
+
   private async handleSend(): Promise<void> {
     if (this.isLoading || !this.inputField) return;
 
@@ -169,22 +234,62 @@ export class AiPage {
     this.autoResizeTextarea();
     this.addMessage({ role: 'user', text });
 
+    this.chatHistory.push({ role: 'user', text });
+    this.saveHistory();
+
     this.isLoading = true;
     this.setInputDisabled(true);
     this.showTypingIndicator();
 
     try {
-      const response = await aiService.sendMessage(text);
+      const streamBubble = this.createStreamBubble();
+
+      let fullText = '';
+
+      await aiService.sendMessageStream(
+        text,
+        (chunk) => {
+          this.removeTypingIndicator();
+          fullText += chunk;
+          DOMHelper.clearChildren(streamBubble);
+          streamBubble.append(...this.parseMarkdown(fullText));
+          DOMHelper.scrollToBottom(this.messagesContainer!);
+        },
+        (completeText) => {
+          this.chatHistory.push({ role: 'model', text: completeText });
+          this.saveHistory();
+        },
+      );
+    } catch (error) {
       this.removeTypingIndicator();
-      this.addMessage({ role: 'model', text: response });
-    } catch {
-      this.removeTypingIndicator();
-      this.addErrorMessage('Ошибка при получении ответа. Попробуй ещё раз.');
+      const message =
+        error instanceof Error ? error.message : 'Ошибка при получении ответа.';
+      this.addErrorMessage(message);
     } finally {
       this.isLoading = false;
       this.setInputDisabled(false);
       this.inputField?.focus();
     }
+  }
+
+  private createStreamBubble(): HTMLElement {
+    if (!this.messagesContainer) return DOMHelper.createElement('div', '');
+
+    const wrapper = DOMHelper.createElement(
+      'div',
+      'ai-page__message ai-page__message--model',
+    );
+    const avatar = DOMHelper.createElement('div', 'ai-page__avatar', '🤖');
+    const bubble = DOMHelper.createElement(
+      'div',
+      'ai-page__bubble ai-page__bubble--model',
+    );
+
+    wrapper.append(avatar, bubble);
+    this.messagesContainer.append(wrapper);
+    DOMHelper.scrollToBottom(this.messagesContainer);
+
+    return bubble;
   }
 
   private addMessage(message: ChatMessage): void {
@@ -213,7 +318,8 @@ export class AiPage {
     }
 
     this.messagesContainer.append(wrapper);
-    DOMHelper.scrollToBottom(this.messagesContainer);
+
+    this.scrollToBottom();
   }
 
   private parseMarkdown(text: string): Node[] {
@@ -430,9 +536,25 @@ export class AiPage {
     this.inputField.style.height = `${Math.min(this.inputField.scrollHeight, MAX_TEXTAREA_HEIGHT)}px`;
   }
 
+  private scrollToBottom(): void {
+    if (!this.messagesContainer) return;
+    const container = this.messagesContainer;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    container.offsetHeight;
+
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: 'auto',
+    });
+  }
+
   private async restartChat(): Promise<void> {
     if (!this.messagesContainer) return;
     DOMHelper.clearChildren(this.messagesContainer);
+    this.chatHistory = [];
+    this.saveHistory();
+
     aiService.reset();
     await this.initAi();
   }

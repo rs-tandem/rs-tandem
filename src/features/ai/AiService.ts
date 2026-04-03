@@ -44,7 +44,7 @@ export class AiService {
 
   private initialized = false;
 
-  async init(topicId: string): Promise<void> {
+  async init(topicId: string, history: ChatMessage[] = []): Promise<void> {
     const ai = getAI(app, { backend: new GoogleAIBackend() });
 
     const model = getGenerativeModel(ai, {
@@ -52,7 +52,14 @@ export class AiService {
       systemInstruction: buildSystemPrompt(topicId),
     });
 
-    this.chatSession = model.startChat({ history: [] });
+    const firebaseHistory = history
+      .filter((msg, index) => !(index === 0 && msg.role === 'model'))
+      .map((msg) => ({
+        role: msg.role,
+        parts: [{ text: msg.text }],
+      }));
+
+    this.chatSession = model.startChat({ history: firebaseHistory });
     this.initialized = true;
   }
 
@@ -92,6 +99,42 @@ export class AiService {
         }
       }
 
+      throw error;
+    }
+  }
+
+  async sendMessageStream(
+    userText: string,
+    onChunk: (text: string) => void,
+    onDone: (fullText: string) => void,
+  ): Promise<void> {
+    if (!this.initialized || !this.chatSession) {
+      throw new Error('AiService не инициализирован.');
+    }
+
+    try {
+      const result = await this.chatSession.sendMessageStream(userText);
+
+      let fullText = '';
+
+      const iterator = result.stream[Symbol.asyncIterator]();
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        const { value: chunk, done } = await iterator.next();
+        if (done || !chunk) break;
+
+        const chunkText = chunk.text();
+        fullText += chunkText;
+        onChunk(chunkText);
+      }
+
+      onDone(fullText);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('quota') || error.message.includes('429')) {
+          throw new Error('Превышен лимит запросов. Подождите немного.');
+        }
+      }
       throw error;
     }
   }
