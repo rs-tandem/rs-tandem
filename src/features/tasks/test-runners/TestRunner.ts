@@ -3,7 +3,6 @@ import type { CheckResult } from '../tasks.types';
 export const ZERO = 0;
 export const ONE = 1;
 export const DELAY_TEST_INPUT_INDEX = 0;
-export const DELAY_TEST_TOLERANCE_MS = 50;
 
 export class TestRunner {
   static createCheckResult(results: CheckResult['results']): CheckResult {
