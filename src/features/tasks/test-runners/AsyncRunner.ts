@@ -1,14 +1,16 @@
 import { isEqual } from 'lodash';
 
-import type { TestCase, CheckResult, TestOutput } from '../tasks.types';
+import type {
+  TestCase,
+  CheckResult,
+  TestOutput,
+  TestResult,
+} from '../tasks.types';
 
-import {
-  TestRunner,
-  ZERO,
-  ONE,
-  DELAY_TEST_INPUT_INDEX,
-  DELAY_TEST_TOLERANCE_MS,
-} from './TestRunner';
+import { TestRunner, DELAY_TEST_INPUT_INDEX } from './TestRunner';
+
+const DELAY_TEST_TOLERANCE_MS = 50;
+const TIMEOUT_MS = 10000;
 
 export class AsyncRunner extends TestRunner {
   static async run(code: string, tests: TestCase[]): Promise<CheckResult> {
@@ -25,7 +27,7 @@ export class AsyncRunner extends TestRunner {
   private static async processAsyncTestResult(
     promise: Promise<unknown>,
     test: TestCase,
-  ): Promise<CheckResult['results'][number]> {
+  ): Promise<TestResult> {
     switch (test.type) {
       case 'delay':
         return this.processDelayTest(promise, test);
@@ -39,7 +41,7 @@ export class AsyncRunner extends TestRunner {
   private static async processDelayTest(
     promise: Promise<unknown>,
     test: TestCase,
-  ): Promise<CheckResult['results'][number]> {
+  ): Promise<TestResult> {
     const start = Date.now();
     await promise;
     const duration = Date.now() - start;
@@ -57,7 +59,7 @@ export class AsyncRunner extends TestRunner {
   private static async processRejectTest(
     promise: Promise<unknown>,
     test: TestCase,
-  ): Promise<CheckResult['results'][number]> {
+  ): Promise<TestResult> {
     try {
       await promise;
       return {
@@ -81,7 +83,7 @@ export class AsyncRunner extends TestRunner {
   private static async processStandardTest(
     promise: Promise<unknown>,
     test: TestCase,
-  ): Promise<CheckResult['results'][number]> {
+  ): Promise<TestResult> {
     const actual = await promise;
     const passed = isEqual(actual, test.output);
 
@@ -100,37 +102,17 @@ export class AsyncRunner extends TestRunner {
     return Promise.all(
       tests.map(async (test) => {
         try {
-          let promiseArg: unknown;
+          const inputString = test.input[0];
+          const restArgs = test.input.slice(1);
 
-          if (typeof test.input[ZERO] === 'string') {
-            const inputString = test.input[ZERO];
-            const ms = test.input[ONE];
-
+          const result = userFunction(
             // eslint-disable-next-line @typescript-eslint/no-implied-eval
-            const evaluator = new Function(`
-              ${userFunction.toString()}
-              return ${inputString};
-            `);
-
-            promiseArg = evaluator();
-            const result = userFunction(promiseArg, ms);
-
-            if (!(result instanceof Promise)) {
-              return {
-                input: test.input,
-                expected: test.output,
-                actual: result as TestOutput,
-                passed: false,
-                error: 'Функция должна возвращать Promise',
-              };
-            }
-
-            return await this.processAsyncTestResult(result, test);
-          }
-
-          // eslint-disable-next-line @typescript-eslint/no-implied-eval
-          const parsedInput = [new Function(`return ${test.input}`)()];
-          const result = userFunction(...parsedInput);
+            new Function(`
+          ${userFunction.toString()}
+          return ${inputString};
+        `)(),
+            ...restArgs,
+          );
 
           if (!(result instanceof Promise)) {
             return {
@@ -142,12 +124,24 @@ export class AsyncRunner extends TestRunner {
             };
           }
 
-          return await this.processAsyncTestResult(result, test);
+          const timeoutPromise = new Promise<TestResult>((_, reject) => {
+            setTimeout(
+              () => reject(new Error('Тест завис >10 секунд')),
+              TIMEOUT_MS,
+            );
+          });
+
+          const finalResult = await Promise.race([
+            this.processAsyncTestResult(result, test),
+            timeoutPromise,
+          ]);
+          return finalResult;
+          // return await this.processAsyncTestResult(result, test);
         } catch (error) {
           return {
             input: test.input,
             expected: test.output,
-            actual: undefined,
+            actual: undefined as TestOutput,
             passed: false,
             error: error instanceof Error ? error.message : String(error),
           };

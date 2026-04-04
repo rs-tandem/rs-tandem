@@ -1,6 +1,14 @@
 import { Router } from 'vanilla-routing';
 
-import { setQuestionResult } from '../../../core/store/questionsSlice';
+import { getCurrentUser } from '../../../core/firebase/auth';
+import {
+  loadSessionResults,
+  saveSessionResults,
+} from '../../../core/firebase/db';
+import {
+  setQuestionResult,
+  setSessionResults,
+} from '../../../core/store/questionsSlice';
 import { store } from '../../../core/store/Store';
 import { Button } from '../../../shared/components';
 import { Popup } from '../../../shared/components/Popup/Popup';
@@ -15,7 +23,7 @@ const ZERO = 0;
 const BASE_TIME_SPINNER = 500;
 
 export class TasksPage {
-  private readonly element: HTMLElement;
+  public element: HTMLElement;
 
   private spinner: Spinner | null = null;
 
@@ -33,7 +41,13 @@ export class TasksPage {
 
   private rightPanel: HTMLElement | null = null;
 
-  private solution: { solution: string; explanation: string } | null = null;
+  private solution: string | null = null;
+
+  private solutionExplanation: string | null = null;
+
+  private solutionExplanationDiv: HTMLElement | null = null;
+
+  private solutionExplanationText: HTMLElement | null = null;
 
   private challengesMenu: HTMLElement | null = null;
 
@@ -44,12 +58,28 @@ export class TasksPage {
 
   private titleContainer: HTMLElement | null = null;
 
+  private state: ReturnType<typeof store.getState>;
+
   constructor(private readonly topicId: string) {
-    this.spinner = new Spinner();
     this.element = DOMHelper.createElement('section', 'tasks-page');
+    this.spinner = new Spinner();
     this.render();
-    this.loadChallengesMenu();
+    this.loadChallengesMenu().then(() => {
+      this.renderChallengesMenu();
+    });
     this.loadRandomChallengeByTopic();
+    this.state = store.getState();
+    store.subscribe(() => {
+      this.state = store.getState();
+      this.renderChallengesMenu();
+    });
+
+    const user = getCurrentUser();
+    if (user) {
+      loadSessionResults(user.uid).then((results) => {
+        store.dispatch(setSessionResults(results));
+      });
+    }
   }
 
   private render(): void {
@@ -85,11 +115,6 @@ export class TasksPage {
     this.challengesMenu = DOMHelper.createElement('div', 'tasks-page__menu');
     panel.append(this.challengesMenu);
 
-    if (this.currentChallenge) {
-      const taskInfo = this.createTaskInfo();
-      panel.append(taskInfo);
-    }
-
     return panel;
   }
 
@@ -104,21 +129,20 @@ export class TasksPage {
     );
     challengesContainer.style.display = 'none';
 
-    this.groupedChallenges[this.topicId]!.forEach((challenge) => {
+    this.groupedChallenges[this.topicId]?.forEach((challenge) => {
       const challengeItem = DOMHelper.createElement(
         'div',
         'menu-item',
         challenge.title,
       );
 
-      const state = store.getState();
-      const isSolved = state.questions.sessionResults[challenge.id];
+      const isSolved = this.state.questions.sessionResults[challenge.id];
 
       if (isSolved) {
         const solvedMark = DOMHelper.createElement(
           'span',
           'menu-item__solved',
-          '  ✓ Решено',
+          '✓ Решено',
         );
         challengeItem.appendChild(solvedMark);
       }
@@ -254,9 +278,6 @@ export class TasksPage {
     this.codeEditor = DOMHelper.createElement('textarea', 'tasks-page__editor');
     this.codeEditor.spellcheck = false;
 
-    if (this.currentChallenge) {
-      this.codeEditor.value = `function ${this.currentChallenge.functionName}() {\n  \n}`;
-    }
     this.editorDiv.append(this.codeEditor);
     const buttonsContainer = DOMHelper.createElement(
       'div',
@@ -303,6 +324,7 @@ export class TasksPage {
         this.currentChallenge =
           await ChallengeService.getRandomChallengeByTopic(this.topicId);
         this.updateTaskDisplay(this.leftPanel!);
+        this.solutionExplanation = '';
       } catch {
         TasksPage.showError('Не удалось загрузить задачу.', this.leftPanel!);
         TasksPage.showError('Не удалось загрузить задачу.', this.editorDiv!);
@@ -311,7 +333,8 @@ export class TasksPage {
   }
 
   private updateTaskDisplay(leftPanel: HTMLElement): void {
-    if (!this.currentChallenge || !leftPanel) return;
+    this.solutionExplanation = '';
+    if (!this.currentChallenge) return;
     DOMHelper.clearChildren(leftPanel);
     DOMHelper.clearChildren(this.editorDiv!);
 
@@ -392,6 +415,11 @@ export class TasksPage {
           solved: true,
         }),
       );
+
+      const user = getCurrentUser();
+      if (user) {
+        saveSessionResults(user.uid, this.state.questions.sessionResults);
+      }
     }
     this.loadChallengesMenu();
 
@@ -482,17 +510,41 @@ export class TasksPage {
 
   private async showSolution(): Promise<void> {
     if (!this.currentChallenge || !this.codeEditor) return;
-
     const popup = new Popup({
       message: 'Вы уверены, что хотите посмотреть решение?',
       confirmText: 'Да',
       cancelText: 'Нет',
       showCancel: true,
       onConfirm: async () => {
-        this.solution = await ChallengeService.getSolution(
+        const res = await ChallengeService.getSolution(
           this.currentChallenge!.id,
         );
-        this.codeEditor!.value = this.solution.solution;
+        this.solution = res.solution;
+        this.solutionExplanation = res.solutionExplanation;
+        if (this.solutionExplanation && this.editorDiv && this.codeEditor) {
+          if (this.solutionExplanationDiv) {
+            this.solutionExplanationDiv.remove();
+          }
+
+          this.solutionExplanationDiv = DOMHelper.createElement(
+            'div',
+            'tasks-page__solutionExplanation-div',
+          );
+          this.solutionExplanationText = DOMHelper.createElement(
+            'p',
+            'tasks-page__solutionExplanation-p',
+          );
+          this.solutionExplanationDiv.appendChild(this.solutionExplanationText);
+
+          this.solutionExplanationText.textContent = this.solutionExplanation;
+          this.editorDiv.insertBefore(
+            this.solutionExplanationDiv,
+            this.codeEditor,
+          );
+        }
+        if (this.codeEditor) {
+          this.codeEditor.value = this.solution;
+        }
       },
       onCancel: () => {
         // Заглушка пока
@@ -502,7 +554,7 @@ export class TasksPage {
     popup.show();
   }
 
-  public getElement(): HTMLElement {
+  getElement() {
     return this.element;
   }
 }

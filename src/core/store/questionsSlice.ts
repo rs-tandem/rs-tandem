@@ -19,7 +19,6 @@ const questionsSlice = createSlice({
     setQuestions: (state, action) => ({
       ...state,
       list: action.payload,
-      sessionResults: {},
       currentIndex: 0,
     }),
 
@@ -40,9 +39,19 @@ const questionsSlice = createSlice({
       ...state,
       sessionResults: {},
     }),
+
+    setSessionResults: (state, action) => ({
+      ...state,
+      sessionResults: action.payload,
+    }),
   },
 });
 
-export const { setQuestions, nextQuestion, setQuestionResult, resetSession } =
-  questionsSlice.actions;
+export const {
+  setQuestions,
+  nextQuestion,
+  setQuestionResult,
+  resetSession,
+  setSessionResults,
+} = questionsSlice.actions;
 export default questionsSlice.reducer;

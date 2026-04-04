@@ -78,10 +78,10 @@ export class ChallengeService {
 
   static async getSolution(
     id: number,
-  ): Promise<{ solution: string; explanation: string }> {
+  ): Promise<{ solution: string; solutionExplanation: string }> {
     const response = await fetch(`${API_BASE_URL}/${id}/solution`);
     if (!response.ok) {
-      throw new Error('Failed to fetch');
+      throw new Error('Failed to fetch solution');
     }
     return response.json();
   }

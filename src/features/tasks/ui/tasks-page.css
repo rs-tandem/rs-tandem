@@ -131,6 +131,7 @@
 }
 
 .tasks-page__editor-div {
+  gap: 10px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -259,4 +260,25 @@
   .tasks-page__buttons {
     flex-direction: column;
   }
+}
+
+.tasks-page__solutionExplanation-div {
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid var(--color-gray-border);
+  width: 100%;
+  max-height: 30%;
+  padding: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-white);
+  resize: none;
+  outline: none;
+}
+
+.tasks-page__solutionExplanation-p {
+  overflow-y: scroll;
+  height: 100%;
 }
