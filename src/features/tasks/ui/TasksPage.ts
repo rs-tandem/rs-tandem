@@ -1,6 +1,14 @@
 import { Router } from 'vanilla-routing';
 
-import { setQuestionResult } from '../../../core/store/questionsSlice';
+import { getCurrentUser } from '../../../core/firebase/auth';
+import {
+  loadSessionResults,
+  saveSessionResults,
+} from '../../../core/firebase/db';
+import {
+  setQuestionResult,
+  setSessionResults,
+} from '../../../core/store/questionsSlice';
 import { store } from '../../../core/store/Store';
 import { Button } from '../../../shared/components';
 import { Popup } from '../../../shared/components/Popup/Popup';
@@ -65,6 +73,13 @@ export class TasksPage {
       this.state = store.getState();
       this.renderChallengesMenu();
     });
+
+    const user = getCurrentUser();
+    if (user) {
+      loadSessionResults(user.uid).then((results) => {
+        store.dispatch(setSessionResults(results));
+      });
+    }
   }
 
   private render(): void {
@@ -400,6 +415,11 @@ export class TasksPage {
           solved: true,
         }),
       );
+
+      const user = getCurrentUser();
+      if (user) {
+        saveSessionResults(user.uid, this.state.questions.sessionResults);
+      }
     }
     this.loadChallengesMenu();
 
