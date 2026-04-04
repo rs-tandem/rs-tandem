@@ -93,8 +93,7 @@ export class ChallengeService {
       const response = await fetch(`${API_BASE_URL}/menuChallenges`);
       const data = await response.json();
       return data;
-    } catch (error) {
-      console.error('Failed to load challenges:', error);
+    } catch {
       return {};
     }
   }
