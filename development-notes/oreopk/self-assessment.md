@@ -1,6 +1,6 @@
 # Self-Assessment: Pavel [GitHub Pavel](https://github.com/oreopk)
 
-**Ссылка на PR с данным файлом:** []
+**Ссылка на PR с данным файлом:** [https://github.com/rs-tandem/rs-tandem/pull/78]
 
 ## 1. Таблица реализованных фич
 
