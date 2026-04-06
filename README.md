@@ -18,6 +18,8 @@ Interview Prep — веб-приложение для подготовки к т
 
 ## Демо-видео
 
+[Ссылка на демо видео, обзор проекта](https://youtu.be/MPsd8Iny9oY)
+
 ## Участники
 
 - [YekaterinaAlex](https://github.com/YekaterinaAlex) / [Дневник](https://github.com/rs-tandem/rs-tandem/tree/main/development-notes/YekaterinaAlex)
