@@ -58,7 +58,7 @@
 }
 
 .button-orange {
-  width: 155px;
+  min-width: 155px;
   background: linear-gradient(
     135deg,
     var(--color-btn-orange) 0%,

@@ -4,7 +4,7 @@ import type {
   Question,
 } from './tests.types';
 
-const API_URL = 'http://5.129.197.181';
+const API_URL = import.meta.env.VITE_IP_BACKEND;
 
 export async function getRandomQuestionByTopic(
   topicId: string,

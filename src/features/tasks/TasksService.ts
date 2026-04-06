@@ -4,7 +4,7 @@ import { BasicJsRunner } from './test-runners/BasicJsRunner';
 import { ClosureRunner } from './test-runners/ClosureRunner';
 import { StructuresRunner } from './test-runners/StructuresRunner';
 
-const API_BASE_URL = 'http://5.129.197.181/api/challenges';
+const API_BASE_URL = `${import.meta.env.VITE_IP_BACKEND}/api/challenges`;
 
 export class ChallengeService {
   static async getRandomChallenge(): Promise<Challenge> {

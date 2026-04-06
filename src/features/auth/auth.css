@@ -236,6 +236,10 @@
 }
 
 @media (max-width: 640px) {
+  .auth-buttons {
+    display: flex;
+    flex-direction: column;
+  }
   .auth-content {
     grid-template-columns: 1fr;
     padding: 32px 24px;
