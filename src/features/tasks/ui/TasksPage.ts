@@ -1,5 +1,7 @@
 import { Router } from 'vanilla-routing';
 
+import errorSound from '../../../assets/sounds/error.wav';
+import successSound from '../../../assets/sounds/success.mp3';
 import { getCurrentUser } from '../../../core/firebase/auth';
 import {
   loadSessionResults,
@@ -51,6 +53,10 @@ export class TasksPage {
 
   private challengesMenu: HTMLElement | null = null;
 
+  private successSound: HTMLAudioElement;
+
+  private errorSound: HTMLAudioElement;
+
   private groupedChallenges: Record<
     string,
     { id: number; title: string; difficulty: string }[]
@@ -80,6 +86,29 @@ export class TasksPage {
         store.dispatch(setSessionResults(results));
       });
     }
+    this.successSound = new Audio(successSound);
+    this.errorSound = new Audio(errorSound);
+    this.successSound.volume = 0.3;
+    this.errorSound.volume = 0.3;
+  }
+
+  private playSound(nameSound: string): void {
+    const isSoundEnabled = localStorage.getItem('sound-enabled') !== 'off';
+    if (!isSoundEnabled) return;
+
+    let sound;
+    if (nameSound === 'successSound') {
+      sound = this.successSound;
+    }
+    if (nameSound === 'errorSound') {
+      sound = this.errorSound;
+    }
+    if (sound) {
+      sound.currentTime = 0;
+      sound.play().catch(() => {
+        // Просто подавляю ошибку, ибо не могу console писать
+      });
+    }
   }
 
   private render(): void {
@@ -90,7 +119,7 @@ export class TasksPage {
       Router.go(`/topic/${this.topicId}`),
     );
 
-    const newTaskBtn = new Button('Next Random Task', 'blue', () =>
+    const newTaskBtn = new Button('Следующее случайное задание', 'blue', () =>
       this.loadRandomChallengeByTopic(),
     );
 
@@ -367,6 +396,17 @@ export class TasksPage {
         await ChallengeService.getTestsForChallenge(this.currentChallenge.id)
       ).tests;
       const code = this.codeEditor.value.trim();
+
+      if (TasksPage.isCodeDangerous(code)) {
+        this.showResults({
+          allPassed: false,
+          message: 'Security error',
+          results: [],
+        });
+        this.playSound('errorSound');
+        return;
+      }
+
       let result;
       if (this.currentChallenge.category === 'basics') {
         result = ChallengeService.runBasicJsCode(
@@ -385,11 +425,11 @@ export class TasksPage {
         this.markChallengeAsSolvedIfNeeded(result);
       }
       if (this.currentChallenge.category === 'async') {
-        result = ChallengeService.runAsyncCode(
+        result = await ChallengeService.runAsyncCode(
           code,
           this.currentChallenge.tests,
         );
-        this.showResults(await result);
+        this.showResults(result);
         this.markChallengeAsSolvedIfNeeded(await result);
       }
       if (this.currentChallenge.category === 'structures') {
@@ -400,11 +440,35 @@ export class TasksPage {
         this.showResults(result);
         this.markChallengeAsSolvedIfNeeded(result);
       }
+      if (result && result.allPassed) {
+        this.playSound('successSound');
+      } else {
+        this.playSound('errorSound');
+      }
     }, BASE_TIME_SPINNER);
     // const resultTests = await ChallengeService.checkSolution(
     //   this.currentChallenge.id,
     //   this.codeEditor.value,
     // );
+  }
+
+  private static isCodeDangerous(code: string): boolean {
+    const dangerousPatterns = [
+      /while\s*\(\s*true\s*\)/,
+      /for\s*\(\s*;\s*;\s*\)/,
+      /fetch\s*\(/,
+      /localStorage/,
+      /sessionStorage/,
+      /document\./,
+      /window\./,
+      /XMLHttpRequest/,
+      /eval\s*\(/,
+      /Function\s*\(/,
+      /Image\s*\(/,
+      /\.src\s*=/,
+    ];
+
+    return dangerousPatterns.some((pattern) => pattern.test(code));
   }
 
   private markChallengeAsSolvedIfNeeded(result: CheckResult): void {
