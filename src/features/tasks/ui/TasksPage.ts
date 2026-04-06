@@ -472,6 +472,7 @@ export class TasksPage {
   }
 
   private markChallengeAsSolvedIfNeeded(result: CheckResult): void {
+    if (!result.allPassed) return;
     if (result.allPassed && this.currentChallenge) {
       store.dispatch(
         setQuestionResult({
