@@ -1,4 +1,5 @@
 import './Button.css';
+import clickSound from '../../../assets/sounds/click.mp3';
 import { DOMHelper } from '../../utils/createElement';
 
 export type ButtonType = 'orange' | 'grey' | 'yellow' | 'green' | 'blue';
@@ -7,6 +8,8 @@ export class Button {
   private element: HTMLButtonElement;
 
   private clickHandler?: () => void;
+
+  private static clickSound: HTMLAudioElement;
 
   constructor(
     text: string,
@@ -21,6 +24,18 @@ export class Button {
 
     if (onClick) {
       this.element.addEventListener('click', onClick);
+    }
+
+    this.element.addEventListener('click', () => {
+      const isSoundEnabled = localStorage.getItem('sound-enabled') !== 'off';
+      if (!isSoundEnabled) return;
+      Button.clickSound.currentTime = 0;
+      Button.clickSound.play().catch(() => {});
+    });
+
+    if (!Button.clickSound) {
+      Button.clickSound = new Audio(clickSound);
+      Button.clickSound.volume = 0.2;
     }
   }
 
