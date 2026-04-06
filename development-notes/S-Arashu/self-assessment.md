@@ -3,6 +3,7 @@
 **Студент:** S-Arashu  
 **Репозиторий:** [rs-tandem/rs-tandem](https://github.com/rs-tandem/rs-tandem)  
 **Доска проекта:** [RS Tandem Project Board](https://github.com/orgs/rs-tandem/projects/1)
+**Ссылка на PR:** [Self-Assessment link](https://github.com/rs-tandem/rs-tandem/pull/80)
 
 ---
 
