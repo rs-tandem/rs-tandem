@@ -9,29 +9,29 @@
 
 ## 1. Таблица реализованных фич
 
-[#3] (#11) Настройка Firebase проекта, config.ts — подключение initializeApp, getAuth, переменные окружения через import.meta.env (+10 баллов, Architecture: API Layer — изоляция слоя работы с внешним сервисом).
+[Настройка Firebase проекта, config.ts — подключение initializeApp, getAuth, переменные окружения через import.meta.env] (https://github.com/orgs/rs-tandem/projects/1/views/1?pane=issue&itemId=157906301&issue=rs-tandem%7Crs-tandem%7C3) (+10 баллов, Architecture: API Layer — изоляция слоя работы с внешним сервисом).
 
-[#16] (#45) Авторизация по email/паролю — registerUser, loginUser, getErrorMessage с переводом кодов ошибок Firebase на русский (+15 баллов, Backend & Data: BaaS Auth — работа с Firebase Authentication).
+[Авторизация по email/паролю — registerUser, loginUser, getErrorMessage с переводом кодов ошибок Firebase на русский] (https://github.com/rs-tandem/rs-tandem/pull/31) (+15 баллов, Backend & Data: BaaS Auth — работа с Firebase Authentication).
 
-[#19] (#10) AuthService — класс-синглтон, onAuthStateChanged, подписка/отписка, isAuthenticated(), паттерн результата { success, error } (+10 баллов, Architecture: Design Patterns — Singleton + Observer).
+[AuthService — класс-синглтон, onAuthStateChanged, подписка/отписка, isAuthenticated(), паттерн результата { success, error }] (https://github.com/rs-tandem/rs-tandem/pull/31) (+10 баллов, Architecture: Design Patterns — Singleton + Observer).
 
-[#21] () Google OAuth — signInWithGoogle, GoogleAuthProvider, signInWithPopup (+10 баллов, Backend & Data: BaaS Auth (OAuth provider)).
+[Google OAuth — signInWithGoogle, GoogleAuthProvider, signInWithPopup] (https://github.com/rs-tandem/rs-tandem/pull/31) (+10 баллов, Backend & Data: BaaS Auth (OAuth provider)).
 
-[#35] (#59) AuthPage — UI страницы входа/регистрации, переключение режимов, валидация, PasswordStrength компонент, восстановление пароля (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
+[AuthPage — UI страницы входа/регистрации, переключение режимов, валидация, PasswordStrength компонент, восстановление пароля] (https://github.com/rs-tandem/rs-tandem/pull/31) (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
 
-[#46] (#64) ProtectedPage — функция высшего порядка для защиты маршрутов (+10 баллов, Architecture: Design Patterns — HOF, Guard pattern).
+[ProtectedPage — функция высшего порядка для защиты маршрутов] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/core/router/route-helpers.ts) (+10 баллов, Architecture: Design Patterns — HOF, Guard pattern).
 
-[#60] (#13) Самописный Markdown-парсер: блоки кода, заголовки, списки, жирный, инлайн-код — через регулярки и DOM-узлы без библиотек (+20 баллов, My Components: Custom Algorithm — нетривиальный алгоритм).
+[Самописный Markdown-парсер: блоки кода, заголовки, списки, жирный, инлайн-код — через регулярки и DOM-узлы без библиотек] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+20 баллов, My Components: Custom Algorithm — нетривиальный алгоритм).
 
-[#61] (#13) AiService — инициализация Firebase AI, системный промпт под каждую тему, startChat с историей (+15 баллов, AI Integration: LLM Setup — подключение и настройка языковой модели).
+[AiService — инициализация Firebase AI, системный промпт под каждую тему, startChat с историей] (https://github.com/rs-tandem/rs-tandem/pull/56) (+15 баллов, AI Integration: LLM Setup — подключение и настройка языковой модели).
 
-[#62] (#13) Стриминг ответа через sendMessageStream + асинхронный итератор Symbol.asyncIterator, цикл while(true) с iterator.next() (+20 баллов, AI Integration: Streaming LLM — потоковая передача ответа).
+[Стриминг ответа через sendMessageStream + асинхронный итератор Symbol.asyncIterator, цикл while(true) с iterator.next()] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+20 баллов, AI Integration: Streaming LLM — потоковая передача ответа).
 
-[#67] (#13) AiPage — полноценный UI чата: пузыри сообщений, аватарка, анимация "печатает...", поле ввода с автореcайзом, кнопки (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
+[AiPage — полноценный UI чата: пузыри сообщений, аватарка, анимация "печатает...", поле ввода с автореcайзом, кнопки] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
 
-[#71] (#13) История чата в localStorage с ключом по теме, загрузка при входе, сброс через "Новый чат" (+10 баллов, UI & Interaction: Persistence — сохранение состояния между сессиями).
+[История чата в localStorage с ключом по теме, загрузка при входе, сброс через "Новый чат"] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+10 баллов, UI & Interaction: Persistence — сохранение состояния между сессиями).
 
-[#72] (#13) Системный промпт под каждую тему (buildSystemPrompt), маппинг topicId → описание темы, передача в systemInstruction (+10 баллов, AI Integration: Prompt Engineering — настройка поведения модели).
+[Системный промпт под каждую тему (buildSystemPrompt), маппинг topicId → описание темы, передача в systemInstruction] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiService.ts) (+10 баллов, AI Integration: Prompt Engineering — настройка поведения модели).
 
 ИТОГО ** 180/250 баллов**
 
