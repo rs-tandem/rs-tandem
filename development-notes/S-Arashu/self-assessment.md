@@ -9,23 +9,31 @@
 
 ## 1. Таблица реализованных фич
 
-Ниже представлен список функциональностей, разработанных мной лично, со ссылками на код и начисленными баллами согласно [SCORE_PERSONAL.md](https://github.com/rolling-scopes-school/tasks/blob/master/stage2/tasks/rs-tandem/SCORE_PERSONAL.md).
+[#3] (#11) Настройка Firebase проекта, config.ts — подключение initializeApp, getAuth, переменные окружения через import.meta.env (+10 баллов, Architecture: API Layer — изоляция слоя работы с внешним сервисом).
 
-**Настройка проекта (Week 1)**  
-Инициализация репозитория, настройка сборщика (Vite), TypeScript, линтеров, базовой структуры папок. Основная настройка была сделана сразу в develop  
-[PR1](https://github.com/rs-tandem/rs-tandem/pull/22/changes) [PR2](https://github.com/rs-tandem/rs-tandem/pull/25/changes)5
+[#16] (#45) Авторизация по email/паролю — registerUser, loginUser, getErrorMessage с переводом кодов ошибок Firebase на русский (+15 баллов, Backend & Data: BaaS Auth — работа с Firebase Authentication).
 
-**Авторизация и аутентификация**
-Полная реализация системы входа/регистрации через Firebase (Email/Password + Google Provider). Валидация форм, обработка ошибок, защита роутов, визуальное оформление сложности пароля.
-[Auth Logic](https://github.com/rs-tandem/rs-tandem/blob/develop/src/core/firebase/auth.ts), [Auth Service](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/auth/AuthService.ts), [Auth Page](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/auth/AuthPage.ts) 75
-**Режим ИИ (AI Chat)**
-Интеграция с AI API, создание чат-интерфейса, управление состоянием диалога, отображение истории сообщений и индикаторов загрузки.
-[AI Service](src/services/AiService.ts), [AI Chat Page](src/pages/AiChatPage.ts) 55
-**Тестирование**
-Написание модульных тестов для компонентов авторизации. Проверка и обработка ошибок.
-[Tests Directory](https://github.com/rs-tandem/rs-tandem/blob/develop/src/__tests__/getErrorMessage.test.ts) 10
+[#19] (#10) AuthService — класс-синглтон, onAuthStateChanged, подписка/отписка, isAuthenticated(), паттерн результата { success, error } (+10 баллов, Architecture: Design Patterns — Singleton + Observer).
 
-**ИТОГО** **145**
+[#21] () Google OAuth — signInWithGoogle, GoogleAuthProvider, signInWithPopup (+10 баллов, Backend & Data: BaaS Auth (OAuth provider)).
+
+[#35] (#59) AuthPage — UI страницы входа/регистрации, переключение режимов, валидация, PasswordStrength компонент, восстановление пароля (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
+
+[#46] (#64) ProtectedPage — функция высшего порядка для защиты маршрутов (+10 баллов, Architecture: Design Patterns — HOF, Guard pattern).
+
+[#60] (#13) Самописный Markdown-парсер: блоки кода, заголовки, списки, жирный, инлайн-код — через регулярки и DOM-узлы без библиотек (+20 баллов, My Components: Custom Algorithm — нетривиальный алгоритм).
+
+[#61] (#13) AiService — инициализация Firebase AI, системный промпт под каждую тему, startChat с историей (+15 баллов, AI Integration: LLM Setup — подключение и настройка языковой модели).
+
+[#62] (#13) Стриминг ответа через sendMessageStream + асинхронный итератор Symbol.asyncIterator, цикл while(true) с iterator.next() (+20 баллов, AI Integration: Streaming LLM — потоковая передача ответа).
+
+[#67] (#13) AiPage — полноценный UI чата: пузыри сообщений, аватарка, анимация "печатает...", поле ввода с автореcайзом, кнопки (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
+
+[#71] (#13) История чата в localStorage с ключом по теме, загрузка при входе, сброс через "Новый чат" (+10 баллов, UI & Interaction: Persistence — сохранение состояния между сессиями).
+
+[#72] (#13) Системный промпт под каждую тему (buildSystemPrompt), маппинг topicId → описание темы, передача в systemInstruction (+10 баллов, AI Integration: Prompt Engineering — настройка поведения модели).
+
+ИТОГО ** 180/250 баллов**
 
 ---
 
