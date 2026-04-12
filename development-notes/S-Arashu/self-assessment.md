@@ -9,29 +9,29 @@
 
 ## 1. Таблица реализованных фич
 
-[Настройка Firebase проекта, config.ts — подключение initializeApp, getAuth, переменные окружения через import.meta.env] (https://github.com/orgs/rs-tandem/projects/1/views/1?pane=issue&itemId=157906301&issue=rs-tandem%7Crs-tandem%7C3) (+10 баллов, Architecture: API Layer — изоляция слоя работы с внешним сервисом).
+[Настройка Firebase проекта, config.ts — подключение initializeApp, getAuth, переменные окружения через import.meta.env](https://github.com/orgs/rs-tandem/projects/1/views/1?pane=issue&itemId=157906301&issue=rs-tandem%7Crs-tandem%7C3) (+10 баллов, Architecture: API Layer — изоляция слоя работы с внешним сервисом).
 
-[Авторизация по email/паролю — registerUser, loginUser, getErrorMessage с переводом кодов ошибок Firebase на русский] (https://github.com/rs-tandem/rs-tandem/pull/31) (+15 баллов, Backend & Data: BaaS Auth — работа с Firebase Authentication).
+[Авторизация по email/паролю — registerUser, loginUser, getErrorMessage с переводом кодов ошибок Firebase на русский](https://github.com/rs-tandem/rs-tandem/pull/31) (+15 баллов, Backend & Data: BaaS Auth — работа с Firebase Authentication).
 
-[AuthService — класс-синглтон, onAuthStateChanged, подписка/отписка, isAuthenticated(), паттерн результата { success, error }] (https://github.com/rs-tandem/rs-tandem/pull/31) (+10 баллов, Architecture: Design Patterns — Singleton + Observer).
+[AuthService — класс-синглтон, onAuthStateChanged, подписка/отписка, isAuthenticated(), паттерн результата { success, error }](https://github.com/rs-tandem/rs-tandem/pull/31) (+10 баллов, Architecture: Design Patterns — Singleton + Observer).
 
-[Google OAuth — signInWithGoogle, GoogleAuthProvider, signInWithPopup] (https://github.com/rs-tandem/rs-tandem/pull/31) (+10 баллов, Backend & Data: BaaS Auth (OAuth provider)).
+[Google OAuth — signInWithGoogle, GoogleAuthProvider, signInWithPopup](https://github.com/rs-tandem/rs-tandem/pull/31) (+10 баллов, Backend & Data: BaaS Auth (OAuth provider)).
 
-[AuthPage — UI страницы входа/регистрации, переключение режимов, валидация, PasswordStrength компонент, восстановление пароля] (https://github.com/rs-tandem/rs-tandem/pull/31) (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
+[AuthPage — UI страницы входа/регистрации, переключение режимов, валидация, PasswordStrength компонент, восстановление пароля](https://github.com/rs-tandem/rs-tandem/pull/31) (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
 
-[ProtectedPage — функция высшего порядка для защиты маршрутов] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/core/router/route-helpers.ts) (+10 баллов, Architecture: Design Patterns — HOF, Guard pattern).
+[ProtectedPage — функция высшего порядка для защиты маршрутов](https://github.com/rs-tandem/rs-tandem/blob/develop/src/core/router/route-helpers.ts) (+10 баллов, Architecture: Design Patterns — HOF, Guard pattern).
 
-[Самописный Markdown-парсер: блоки кода, заголовки, списки, жирный, инлайн-код — через регулярки и DOM-узлы без библиотек] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+20 баллов, My Components: Custom Algorithm — нетривиальный алгоритм).
+[Самописный Markdown-парсер: блоки кода, заголовки, списки, жирный, инлайн-код — через регулярки и DOM-узлы без библиотек](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+20 баллов, My Components: Custom Algorithm — нетривиальный алгоритм).
 
-[AiService — инициализация Firebase AI, системный промпт под каждую тему, startChat с историей] (https://github.com/rs-tandem/rs-tandem/pull/56) (+15 баллов, AI Integration: LLM Setup — подключение и настройка языковой модели).
+[AiService — инициализация Firebase AI, системный промпт под каждую тему, startChat с историей](https://github.com/rs-tandem/rs-tandem/pull/56) (+15 баллов, AI Integration: LLM Setup — подключение и настройка языковой модели).
 
-[Стриминг ответа через sendMessageStream + асинхронный итератор Symbol.asyncIterator, цикл while(true) с iterator.next()] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+20 баллов, AI Integration: Streaming LLM — потоковая передача ответа).
+[Стриминг ответа через sendMessageStream + асинхронный итератор Symbol.asyncIterator, цикл while(true) с iterator.next()](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+20 баллов, AI Integration: Streaming LLM — потоковая передача ответа).
 
-[AiPage — полноценный UI чата: пузыри сообщений, аватарка, анимация "печатает...", поле ввода с автореcайзом, кнопки] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
+[AiPage — полноценный UI чата: пузыри сообщений, аватарка, анимация "печатает...", поле ввода с автореcайзом, кнопки](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+25 баллов, My Components: Complex Component — сложный интерактивный компонент).
 
-[История чата в localStorage с ключом по теме, загрузка при входе, сброс через "Новый чат"] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+10 баллов, UI & Interaction: Persistence — сохранение состояния между сессиями).
+[История чата в localStorage с ключом по теме, загрузка при входе, сброс через "Новый чат"](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiPage.ts) (+10 баллов, UI & Interaction: Persistence — сохранение состояния между сессиями).
 
-[Системный промпт под каждую тему (buildSystemPrompt), маппинг topicId → описание темы, передача в systemInstruction] (https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiService.ts) (+10 баллов, AI Integration: Prompt Engineering — настройка поведения модели).
+[Системный промпт под каждую тему (buildSystemPrompt), маппинг topicId → описание темы, передача в systemInstruction](https://github.com/rs-tandem/rs-tandem/blob/develop/src/features/ai/AiService.ts) (+10 баллов, AI Integration: Prompt Engineering — настройка поведения модели).
 
 ИТОГО ** 180/250 баллов**
 
